@@ -1,3 +1,11 @@
+const logo =
+document.getElementById("barsa-logo");
+
+
+const terminal =
+document.getElementById("terminal-line");
+
+
 const text =
 document.getElementById("boot-text");
 
@@ -10,20 +18,39 @@ let index = 0;
 
 
 
-function type(){
+function startTerminal(){
 
-    if(index < message.length){
 
-        text.textContent += message[index];
+terminal.style.opacity = "1";
 
-        index++;
 
-        setTimeout(type,80);
+typeText();
 
-    }
 
 }
 
 
 
-setTimeout(type,1600);
+function typeText(){
+
+
+if(index < message.length){
+
+
+text.textContent += message[index];
+
+
+index++;
+
+
+setTimeout(typeText,80);
+
+
+}
+
+
+}
+
+
+
+setTimeout(startTerminal,4000);
