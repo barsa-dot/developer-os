@@ -9,10 +9,8 @@
         height="500"
         fill="#0D1117"/>
 
-
     <defs>
 
-        <!-- Core glow -->
         <filter id="coreGlow">
 
             <feGaussianBlur
@@ -20,17 +18,11 @@
                 result="blur"/>
 
             <feMerge>
-
                 <feMergeNode in="blur"/>
-
                 <feMergeNode in="SourceGraphic"/>
-
             </feMerge>
 
         </filter>
-
-
-        <!-- Text glow -->
         <filter id="textGlow">
 
             <feGaussianBlur
@@ -38,133 +30,63 @@
                 result="blur"/>
 
             <feMerge>
-
                 <feMergeNode in="blur"/>
-
                 <feMergeNode in="SourceGraphic"/>
-
             </feMerge>
-
         </filter>
 
-
     </defs>
-
-
-
-    <!-- ========================= -->
-    <!-- BARSA CORE -->
-    <!-- ========================= -->
-
-
-    <!-- CORE POSITION -->
-    
-<g
+    <g
     transform="translate(450 150)">
-
-
-    <!-- CORE ANIMATION -->
-
     <g
         filter="url(#coreGlow)"
         transform="scale(0)">
-
-
-
-        <!-- Outer crystal -->
-
         <polygon
             points="0,-45 45,0 0,45 -45,0"
             fill="#58A6FF"
             opacity="0.2">
-
             <animate
                 attributeName="opacity"
                 values="0.2;0.7;0.2"
                 dur="2s"
                 repeatCount="indefinite"/>
-
+        </polygon>
+        
+        <polygon points="0,-25 25,0 0,25 -25,0" fill="#58A6FF">
+            <animate attributeName="opacity" values="1;0.6;1" dur="0.5s" begin="3.5s"/>
         </polygon>
 
-
-
-        <!-- Inner crystal -->
-
-        <polygon
-            points="0,-25 25,0 0,25 -25,0"
-            fill="#58A6FF"/>
-
-
-
-        <!-- Power ON -->
-
         <animateTransform
-
             attributeName="transform"
-
             type="scale"
-
             values="0;1.2;1"
-
             dur="1s"
-
             fill="freeze"/>
 
-
     </g>
-
-
-    <!-- FLOATING MOTION -->
-
-   <animateTransform
-
+    <animateTransform
     attributeName="transform"
-
     type="translate"
-
     values="
     450 150;
     450 210;
     450 260"
-
     dur="1.5s"
-
     begin="2s"
-
     fill="freeze"/>
 
-
 </g>
-
-
-
-    <!-- ========================= -->
-    <!-- BOOT TEXT -->
-    <!-- ========================= -->
-
-
     <text
 
         x="450"
-
         y="290"
-
         text-anchor="middle"
-
         fill="#C9D1D9"
-
         font-family="JetBrains Mono, monospace"
-
         font-size="24"
-
         filter="url(#textGlow)">
-
-
         Initializing BARSA OS...
 
-
     </text>
-
-
 
 </svg>

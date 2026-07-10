@@ -1,50 +1,17 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
 body{
+
+    margin:0;
 
     background:#0D1117;
 
-    color:#C9D1D9;
-
-    font-family:"JetBrains Mono",Consolas,monospace;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    min-height:100vh;
-}
-
-.workspace{
-
-    width:920px;
-
-    height:560px;
-
-    background:#161B22;
-
-    border:1px solid #30363D;
-
-    border-radius:20px;
-
-    box-shadow:0 0 60px rgba(88,166,255,.08);
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
     overflow:hidden;
+
 }
+
 
 #boot-screen{
+
+    height:100vh;
 
     display:flex;
 
@@ -54,41 +21,33 @@ body{
 
     align-items:center;
 
-    gap:40px;
 }
 
-#core img{
 
-    width:72px;
 
-    height:72px;
+#core-container{
 
-    filter:drop-shadow(0 0 12px rgba(88,166,255,.5));
+    margin-bottom:40px;
 
 }
 
-#boot-output{
 
-    width: 600px;
+#core{
 
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    gap: 12px;
-
-    font-size: 22px;
-
-    letter-spacing: 1px;
+    width:80px;
 
 }
 
-#boot-output div{
 
-    width: 100%;
 
-    text-align: center;
+#boot-text{
+
+    color:#C9D1D9;
+
+    font-family:monospace;
+
+    font-size:24px;
+
+    letter-spacing:1px;
 
 }

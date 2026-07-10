@@ -1,55 +1,27 @@
-const bootOutput = document.getElementById("boot-output");
+const text =
+"Initializing BARSA OS...";
 
-const bootSequence = [
-    "Initializing BARSA OS...",
-    "Loading Developer Core...",
-    "Synchronizing GitHub...",
-    "Preparing Workspace...",
-    "Launching Terminal..."
-];
 
-let line = 0;
+const output =
+document.getElementById("boot-text");
 
-function typeLine() {
 
-    if (line >= bootSequence.length) {
-        return;
-    }
+let i = 0;
 
-    const current = bootSequence[line];
 
-    let character = 0;
+function type(){
 
-    const paragraph = document.createElement("div");
+    if(i < text.length){
 
-    bootOutput.appendChild(paragraph);
+        output.innerHTML += text[i];
 
-    function typeCharacter() {
+        i++;
 
-        if (character < current.length) {
-
-            paragraph.textContent += current.charAt(character);
-
-            character++;
-
-            setTimeout(typeCharacter, 35);
-
-        } else {
-
-            line++;
-
-            setTimeout(typeLine, 300);
-
-        }
+        setTimeout(type,80);
 
     }
-
-    typeCharacter();
 
 }
 
-window.onload = () => {
 
-    setTimeout(typeLine, 700);
-
-};
+setTimeout(type,1500);
