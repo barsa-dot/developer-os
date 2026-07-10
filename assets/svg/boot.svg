@@ -1,87 +1,170 @@
 <svg
-width="900"
-height="500"
-viewBox="0 0 900 500"
-xmlns="http://www.w3.org/2000/svg">
+    width="900"
+    height="500"
+    viewBox="0 0 900 500"
+    xmlns="http://www.w3.org/2000/svg">
+
+    <rect
+        width="900"
+        height="500"
+        fill="#0D1117"/>
 
 
-<rect
-width="900"
-height="500"
-fill="#0D1117"/>
+    <defs>
+
+        <!-- Core glow -->
+        <filter id="coreGlow">
+
+            <feGaussianBlur
+                stdDeviation="4"
+                result="blur"/>
+
+            <feMerge>
+
+                <feMergeNode in="blur"/>
+
+                <feMergeNode in="SourceGraphic"/>
+
+            </feMerge>
+
+        </filter>
 
 
-<!-- Core Glow -->
+        <!-- Text glow -->
+        <filter id="textGlow">
 
-<defs>
+            <feGaussianBlur
+                stdDeviation="1.5"
+                result="blur"/>
 
-<filter id="glow">
+            <feMerge>
 
-<feGaussianBlur
-stdDeviation="4"
-result="blur"/>
+                <feMergeNode in="blur"/>
 
-<feMerge>
+                <feMergeNode in="SourceGraphic"/>
 
-<feMergeNode in="blur"/>
+            </feMerge>
 
-<feMergeNode in="SourceGraphic"/>
-
-</feMerge>
-
-</filter>
+        </filter>
 
 
-</defs>
+    </defs>
 
 
-<!-- Core -->
 
+    <!-- ========================= -->
+    <!-- BARSA CORE -->
+    <!-- ========================= -->
+
+
+    <!-- CORE POSITION -->
+    
 <g
-filter="url(#glow)"
-transform="translate(450 150)">
+    transform="translate(450 150)">
 
 
-<polygon
-points="0,-35 35,0 0,35 -35,0"
-fill="#58A6FF"
-opacity="0.25">
+    <!-- CORE ANIMATION -->
+
+    <g
+        filter="url(#coreGlow)"
+        transform="scale(0)">
 
 
-<animate
-attributeName="opacity"
-values="0.25;0.8;0.25"
-dur="2s"
-repeatCount="indefinite"/>
 
-</polygon>
+        <!-- Outer crystal -->
+
+        <polygon
+            points="0,-45 45,0 0,45 -45,0"
+            fill="#58A6FF"
+            opacity="0.2">
+
+            <animate
+                attributeName="opacity"
+                values="0.2;0.7;0.2"
+                dur="2s"
+                repeatCount="indefinite"/>
+
+        </polygon>
 
 
-<polygon
-points="0,-22 22,0 0,22 -22,0"
-fill="#58A6FF"/>
+
+        <!-- Inner crystal -->
+
+        <polygon
+            points="0,-25 25,0 0,25 -25,0"
+            fill="#58A6FF"/>
+
+
+
+        <!-- Power ON -->
+
+        <animateTransform
+
+            attributeName="transform"
+
+            type="scale"
+
+            values="0;1.2;1"
+
+            dur="1s"
+
+            fill="freeze"/>
+
+
+    </g>
+
+
+    <!-- FLOATING MOTION -->
+
+   <animateTransform
+
+    attributeName="transform"
+
+    type="translate"
+
+    values="
+    450 150;
+    450 210;
+    450 260"
+
+    dur="1.5s"
+
+    begin="2s"
+
+    fill="freeze"/>
 
 
 </g>
 
 
 
-<!-- Boot Text -->
+    <!-- ========================= -->
+    <!-- BOOT TEXT -->
+    <!-- ========================= -->
 
 
-<text
-x="450"
-y="280"
-text-anchor="middle"
-fill="#C9D1D9"
-font-family="monospace"
-font-size="24">
+    <text
+
+        x="450"
+
+        y="290"
+
+        text-anchor="middle"
+
+        fill="#C9D1D9"
+
+        font-family="JetBrains Mono, monospace"
+
+        font-size="24"
+
+        filter="url(#textGlow)">
 
 
-Initializing BARSA OS...
+        Initializing BARSA OS...
 
 
-</text>
+    </text>
+
 
 
 </svg>
