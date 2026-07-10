@@ -5,23 +5,60 @@ viewBox="0 0 120 120"
 xmlns="http://www.w3.org/2000/svg">
 
 
-<!-- body -->
+<!-- Pac-Man body -->
 
 <path
-
-id="body"
 
 d="
 M60 60
 L110 60
-A50 50 0 1 1 60 10
+
+A50 50 0 1 0
+60 110
+
 Z"
 
-fill="#FFD700"/>
+fill="#FFD700">
+
+
+<animate
+
+attributeName="d"
+
+dur="0.35s"
+
+repeatCount="indefinite"
+
+values="
+
+M60 60
+L110 60
+A50 50 0 1 0
+60 110
+Z;
+
+
+M60 60
+L110 35
+A50 50 0 1 0
+60 110
+Z;
+
+
+M60 60
+L110 60
+A50 50 0 1 0
+60 110
+Z
+
+"/>
+
+
+</path>
 
 
 
-<!-- eye -->
+<!-- Eye -->
 
 <circle
 

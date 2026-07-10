@@ -1,0 +1,65 @@
+<svg
+
+width="900"
+
+height="500"
+
+xmlns="http://www.w3.org/2000/svg">
+
+
+
+<!-- background -->
+
+<rect
+
+width="900"
+
+height="500"
+
+fill="#000000"/>
+
+
+
+<!-- maze border -->
+
+<rect
+
+x="30"
+
+y="30"
+
+width="840"
+
+height="440"
+
+fill="none"
+
+stroke="#1F6FEB"
+
+stroke-width="8"/>
+
+
+
+<!-- arcade dots -->
+
+<g fill="#FFD700">
+
+
+<circle cx="150" cy="250" r="5"/>
+
+<circle cx="250" cy="250" r="5"/>
+
+<circle cx="350" cy="250" r="5"/>
+
+<circle cx="450" cy="250" r="5"/>
+
+<circle cx="550" cy="250" r="5"/>
+
+<circle cx="650" cy="250" r="5"/>
+
+
+</g>
+
+
+
+</svg>
