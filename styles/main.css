@@ -57,37 +57,38 @@ body{
     gap:40px;
 }
 
-#core{
+#core img{
 
-    color:#58A6FF;
+    width:72px;
 
-    font-size:42px;
+    height:72px;
 
-    line-height:.9;
+    filter:drop-shadow(0 0 12px rgba(88,166,255,.5));
 
-    text-align:center;
-
-    text-shadow:
-
-        0 0 10px #58A6FF,
-
-        0 0 20px #58A6FF;
 }
 
 #boot-output{
 
-    font-size:22px;
+    width: 600px;
 
-    letter-spacing:1px;
+    display: flex;
 
-    display:flex;
+    flex-direction: column;
 
-    flex-direction:column;
+    align-items: center;
 
-    gap:10px;
+    gap: 12px;
 
-    min-width:550px;
+    font-size: 22px;
 
-    text-align:left;
+    letter-spacing: 1px;
+
+}
+
+#boot-output div{
+
+    width: 100%;
+
+    text-align: center;
 
 }
