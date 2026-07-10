@@ -1,0 +1,87 @@
+<svg
+width="900"
+height="500"
+viewBox="0 0 900 500"
+xmlns="http://www.w3.org/2000/svg">
+
+
+<rect
+width="900"
+height="500"
+fill="#0D1117"/>
+
+
+<!-- Core Glow -->
+
+<defs>
+
+<filter id="glow">
+
+<feGaussianBlur
+stdDeviation="4"
+result="blur"/>
+
+<feMerge>
+
+<feMergeNode in="blur"/>
+
+<feMergeNode in="SourceGraphic"/>
+
+</feMerge>
+
+</filter>
+
+
+</defs>
+
+
+<!-- Core -->
+
+<g
+filter="url(#glow)"
+transform="translate(450 150)">
+
+
+<polygon
+points="0,-35 35,0 0,35 -35,0"
+fill="#58A6FF"
+opacity="0.25">
+
+
+<animate
+attributeName="opacity"
+values="0.25;0.8;0.25"
+dur="2s"
+repeatCount="indefinite"/>
+
+</polygon>
+
+
+<polygon
+points="0,-22 22,0 0,22 -22,0"
+fill="#58A6FF"/>
+
+
+</g>
+
+
+
+<!-- Boot Text -->
+
+
+<text
+x="450"
+y="280"
+text-anchor="middle"
+fill="#C9D1D9"
+font-family="monospace"
+font-size="24">
+
+
+Initializing BARSA OS...
+
+
+</text>
+
+
+</svg>
