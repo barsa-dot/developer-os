@@ -1,0 +1,93 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    background:#0D1117;
+
+    color:#C9D1D9;
+
+    font-family:"JetBrains Mono",Consolas,monospace;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:100vh;
+}
+
+.workspace{
+
+    width:920px;
+
+    height:560px;
+
+    background:#161B22;
+
+    border:1px solid #30363D;
+
+    border-radius:20px;
+
+    box-shadow:0 0 60px rgba(88,166,255,.08);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:hidden;
+}
+
+#boot-screen{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:40px;
+}
+
+#core{
+
+    color:#58A6FF;
+
+    font-size:42px;
+
+    line-height:.9;
+
+    text-align:center;
+
+    text-shadow:
+
+        0 0 10px #58A6FF,
+
+        0 0 20px #58A6FF;
+}
+
+#boot-output{
+
+    font-size:22px;
+
+    letter-spacing:1px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    min-width:550px;
+
+    text-align:left;
+
+}
