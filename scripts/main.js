@@ -1,21 +1,22 @@
 const text =
-"Initializing BARSA OS...";
-
-
-const output =
 document.getElementById("boot-text");
 
 
-let i = 0;
+const message =
+"Initializing BARSA OS...";
+
+
+let index = 0;
+
 
 
 function type(){
 
-    if(i < text.length){
+    if(index < message.length){
 
-        output.innerHTML += text[i];
+        text.textContent += message[index];
 
-        i++;
+        index++;
 
         setTimeout(type,80);
 
@@ -24,4 +25,5 @@ function type(){
 }
 
 
-setTimeout(type,1500);
+
+setTimeout(type,1600);

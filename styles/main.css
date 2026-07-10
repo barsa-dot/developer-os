@@ -9,13 +9,12 @@ body{
 }
 
 
+
 #boot-screen{
 
     height:100vh;
 
     display:flex;
-
-    flex-direction:column;
 
     justify-content:center;
 
@@ -25,16 +24,63 @@ body{
 
 
 
-#core-container{
+#terminal-line{
 
-    margin-bottom:40px;
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
 
 }
 
 
+
 #core{
 
-    width:80px;
+    width:70px;
+
+    position:relative;
+
+    top:-200px;
+
+    opacity:0;
+
+    animation:
+
+    coreDrop 1.5s ease forwards;
+
+}
+
+
+
+@keyframes coreDrop{
+
+
+    0%{
+
+        top:-200px;
+
+        opacity:0;
+
+    }
+
+
+    60%{
+
+        opacity:1;
+
+    }
+
+
+    100%{
+
+        top:0;
+
+        opacity:1;
+
+    }
+
 
 }
 
@@ -47,7 +93,5 @@ body{
     font-family:monospace;
 
     font-size:24px;
-
-    letter-spacing:1px;
 
 }
