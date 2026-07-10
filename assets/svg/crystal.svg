@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 256 256"
+     width="256"
+     height="256">
+
+  <defs>
+
+    <!-- Blue Glow -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Crystal Gradient -->
+    <linearGradient id="crystalGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%">
+      <stop offset="0%" stop-color="#79C0FF"/>
+      <stop offset="100%" stop-color="#58A6FF"/>
+    </linearGradient>
+
+  </defs>
+
+  <!-- Outer Diamond -->
+  <polygon
+      points="128,20 220,128 128,236 36,128"
+      fill="#161B22"
+      stroke="url(#crystalGradient)"
+      stroke-width="5"
+      filter="url(#glow)"/>
+
+  <!-- Top Facet -->
+  <polygon
+      points="128,20 180,90 76,90"
+      fill="#79C0FF"
+      opacity="0.22"/>
+
+  <!-- Left Facet -->
+  <polygon
+      points="36,128 76,90 128,236"
+      fill="#58A6FF"
+      opacity="0.18"/>
+
+  <!-- Right Facet -->
+  <polygon
+      points="220,128 180,90 128,236"
+      fill="#79C0FF"
+      opacity="0.18"/>
+
+  <!-- Center Facet -->
+  <polygon
+      points="76,90 180,90 128,236"
+      fill="#FFFFFF"
+      opacity="0.05"/>
+
+</svg>
