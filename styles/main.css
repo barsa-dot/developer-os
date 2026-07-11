@@ -1,100 +1,127 @@
-body{
+body {
 
-margin:0;
+    margin:0;
 
-background:#0D1117;
+    height:100vh;
 
-overflow:hidden;
+    background:#000;
 
-font-family:monospace;
+    display:flex;
 
-}
+    justify-content:center;
 
+    align-items:center;
 
-
-#boot-screen{
-
-height:100vh;
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-align-items:center;
+    font-family:monospace;
 
 }
 
 
 
-#barsa-logo{
+#boot-screen {
 
-width:150px;
+    width:100%;
 
-opacity:0;
+    height:100%;
 
-animation:
+    display:flex;
 
-logoAppear 1.5s ease forwards;
+    justify-content:center;
 
-}
-
-
-
-@keyframes logoAppear{
-
-
-0%{
-
-opacity:0;
-
-transform:scale(0.5);
-
-}
-
-
-100%{
-
-opacity:1;
-
-transform:scale(1);
-
-}
-
+    align-items:center;
 
 }
 
 
 
-#terminal-line{
+#arcade-frame {
 
-display:flex;
 
-align-items:center;
+    width:700px;
 
-gap:15px;
+    height:400px;
 
-margin-top:50px;
 
-opacity:0;
+    border:8px solid #1F6FEB;
+
+
+    box-shadow:
+    0 0 20px #1F6FEB;
+
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+
+    color:white;
+
 
 }
 
 
 
-#core{
+h1 {
 
-width:60px;
+
+    color:#FFD700;
+
+    font-size:50px;
+
+    letter-spacing:8px;
+
 
 }
 
 
 
-#boot-text{
+#edition {
 
-color:#C9D1D9;
 
-font-size:24px;
+    color:white;
+
+    font-size:18px;
+
+}
+
+
+
+#pacman {
+
+
+    width:90px;
+
+    margin:30px;
+
+
+}
+
+
+
+#press-start {
+
+
+    color:#FFD700;
+
+    animation:pulse 1s infinite;
+
+
+}
+
+
+
+@keyframes pulse {
+
+
+    50%{
+
+        opacity:0.3;
+
+    }
+
 
 }

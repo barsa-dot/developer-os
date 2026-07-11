@@ -1,0 +1,10 @@
+{
+  "boot": [
+    "Initializing BARSA OS...",
+    "Loading developer profile...",
+    "Connecting GitHub...",
+    "Loading projects...",
+    "Mounting workspace...",
+    "Workspace ready."
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "system": "BARSA OS",
+  "edition": "Developer Arcade Edition",
+
+  "version": "1.0.0",
+
+  "bootDelay": 1200,
+
+  "typingSpeed": 55,
+
+  "cursorBlinkSpeed": 500
+}
