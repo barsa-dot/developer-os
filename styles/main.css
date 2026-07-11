@@ -19,7 +19,7 @@ body {
 #arcade-frame {
     width: 900px;
     height: 600px;
-    overflow: hidden;
+    overflow: visible;
     border: 8px solid #1F6FEB;
     box-shadow: 0 0 20px #1F6FEB;
     display: flex;
@@ -40,14 +40,17 @@ h1 {
     font-size: 18px;
 }
 
+/* Chained Separate Animations for Drop and Patrol Sequences */
 #pacman {
     width: 90px;
-    margin: 30px;
     position: relative;
-    z-index: 2;
-    animation: pacmanBootMove 6s ease-in-out forwards;
-    animation-delay: 2.3s;
-    opacity: 0;
+    z-index: 5;
+    animation:
+        pacmanDrop 1.5s ease forwards,
+        pacmanPatrol 4s ease-in-out infinite;
+    animation-delay:
+        0s,
+        1.5s;
 }
 
 #press-start {
@@ -143,27 +146,27 @@ h1 {
    PACMAN MOVEMENT
 ========================= */
 
-@keyframes pacmanBootMove {
+/* Initial drop */
+@keyframes pacmanDrop {
     0% {
-        transform:
-        translateY(-250px)
-        translateX(0);
+        transform: translateY(-250px);
         opacity: 0;
     }
-    25% {
-        transform:
-        translateY(0)
-        translateX(0);
+    100% {
+        transform: translateY(0);
         opacity: 1;
     }
-    55% {
-        transform:
-        translateY(0)
-        translateX(180px);
+}
+
+/* Continuous movement with expanded boundary limits */
+@keyframes pacmanPatrol {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(320px);
     }
     100% {
-        transform:
-        translateY(0)
-        translateX(-180px);
+        transform: translateX(-320px);
     }
 }
