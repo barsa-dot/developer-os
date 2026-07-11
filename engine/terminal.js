@@ -1,4 +1,3 @@
-document.getElementById("boot-text");
 async function startBootSequence() {
 
     const bootText =
@@ -18,11 +17,16 @@ async function startBootSequence() {
         for (const line of commands.boot) {
 
 
-            bootText.textContent +=
-            "> " + line + "\n";
+            await typeLine(
+                bootText,
+                "> " + line
+            );
 
 
-            await wait(1000);
+            bootText.innerHTML += "\n";
+
+
+            await wait(700);
 
         }
 
@@ -42,10 +46,32 @@ async function startBootSequence() {
 
 
 
+async function typeLine(element, text){
+
+
+    for(
+        let i = 0;
+        i < text.length;
+        i++
+    ){
+
+
+        element.innerHTML +=
+        text[i];
+
+
+        await wait(55);
+
+    }
+
+}
+
+
+
 function wait(ms){
 
     return new Promise(
-        resolve => setTimeout(resolve,ms)
+        resolve => setTimeout(resolve, ms)
     );
 
 }
@@ -56,9 +82,11 @@ window.addEventListener(
 "DOMContentLoaded",
 ()=>{
 
+
     setTimeout(
         startBootSequence,
         4500
     );
+
 
 });
