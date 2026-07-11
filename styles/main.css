@@ -40,18 +40,13 @@ h1 {
     font-size: 18px;
 }
 
-/* Combined Layout, Layering, and Chained Animations */
 #pacman {
     width: 90px;
     margin: 30px;
     position: relative;
     z-index: 2;
-    animation:
-        dropIn 1s ease forwards,
-        movePacman 3s linear infinite;
-    animation-delay:
-        2.3s,
-        3.5s;
+    animation: pacmanBootMove 6s ease-in-out forwards;
+    animation-delay: 2.3s;
     opacity: 0;
 }
 
@@ -148,14 +143,27 @@ h1 {
    PACMAN MOVEMENT
 ========================= */
 
-@keyframes movePacman {
+@keyframes pacmanBootMove {
     0% {
-        transform: translateX(-300px);
+        transform:
+        translateY(-250px)
+        translateX(0);
+        opacity: 0;
     }
-    50% {
-        transform: translateX(300px);
+    25% {
+        transform:
+        translateY(0)
+        translateX(0);
+        opacity: 1;
+    }
+    55% {
+        transform:
+        translateY(0)
+        translateX(180px);
     }
     100% {
-        transform: translateX(-300px);
+        transform:
+        translateY(0)
+        translateX(-180px);
     }
 }
