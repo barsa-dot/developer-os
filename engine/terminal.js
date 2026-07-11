@@ -1,19 +1,64 @@
-async function loadBootSequence() {
+document.getElementById("boot-text");
+async function startBootSequence() {
+
+    const bootText =
+    document.getElementById("boot-text");
+
+
     try {
-        // Load the boot commands
-        const response = await fetch("./config/commands.json");
-        const data = await response.json();
 
-        // Find the boot text element
-        const bootText = document.getElementById("boot-text");
+        const response =
+        await fetch("./config/commands.json");
 
-        // Display only the first boot command for now
-        bootText.textContent = data.boot[0];
 
-    } catch (error) {
-        console.error("Failed to load boot commands:", error);
+        const commands =
+        await response.json();
+
+
+        for (const line of commands.boot) {
+
+
+            bootText.textContent +=
+            "> " + line + "\n";
+
+
+            await wait(1000);
+
+        }
+
+
     }
+
+    catch(error){
+
+        console.error(
+        "Boot sequence failed:",
+        error
+        );
+
+    }
+
 }
 
-// Run after the page loads
-window.addEventListener("DOMContentLoaded", loadBootSequence);
+
+
+function wait(ms){
+
+    return new Promise(
+        resolve => setTimeout(resolve,ms)
+    );
+
+}
+
+
+
+window.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+    setTimeout(
+        startBootSequence,
+        4500
+    );
+
+});

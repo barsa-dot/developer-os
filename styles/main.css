@@ -37,9 +37,9 @@ body {
 #arcade-frame {
 
 
-    width:700px;
+    width:900px;
 
-    height:400px;
+    height:600px;
 
 
     border:8px solid #1F6FEB;
@@ -267,5 +267,32 @@ h1 {
         opacity:1;
 
     }
+
+}
+
+#terminal-line {
+
+    margin-top:40px;
+
+    width:700px;
+
+    min-height:120px;
+
+}
+
+
+#boot-text {
+
+    color:#FFD700;
+
+    font-family:monospace;
+
+    font-size:16px;
+
+    line-height:1.5;
+
+    text-align:left;
+
+    white-space:pre-wrap;
 
 }

@@ -1,54 +1,37 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
 <title>BARSA OS</title>
-
 <link rel="stylesheet" href="./styles/main.css">
-
 </head>
-
 
 <body>
 
+<div id="arcade-frame">
 
-<div id="boot-screen">
+    <h1>
+        BARSA OS
+    </h1>
 
+    <p id="edition">
+        Developer Arcade Edition
+    </p>
 
-    <div id="arcade-frame">
+    <img
+    id="pacman"
+    src="./assets/arcade/svg/pacman.svg">
 
+    <p id="press-start">
+        PRESS START
+    </p>
 
-        <h1>
-            BARSA OS
-        </h1>
-
-
-        <p id="edition">
-            Developer Arcade Edition
-        </p>
-
-
-        <img
-        id="pacman"
-        src="./assets/arcade/svg/pacman.svg">
-
-
-        <p id="press-start">
-            PRESS START
-        </p>
-
-
+    <div id="terminal-line">
+        <pre id="boot-text"></pre>
     </div>
-
 
 </div>
 
-
-
+<script src="./scripts/main.js"></script>
 <script src="./engine/terminal.js"></script>
-
-
 </body>
-
 </html>
