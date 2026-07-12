@@ -3,6 +3,11 @@ async function startBootSequence() {
     const bootText =
     document.getElementById("boot-text");
 
+    const miniAgent =
+    document.getElementById("mini-agent");
+
+    miniAgent.style.opacity = "1";
+
 
     try {
 
