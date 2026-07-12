@@ -6,7 +6,7 @@ async function startBootSequence() {
     const miniAgent =
     document.getElementById("mini-agent");
 
-    miniAgent.style.opacity = "1";
+    miniAgent.classList.add("active");
 
 
     try {
