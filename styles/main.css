@@ -40,14 +40,22 @@ h1 {
     font-size: 18px;
 }
 
-/* Chained Separate Animations for Drop and Patrol Sequences */
+#pacman-layer {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Verified Pac-Man CSS block with chained dropping and linear patrol animations */
 #pacman {
     width: 90px;
     position: relative;
     z-index: 5;
     animation:
         pacmanDrop 1.5s ease forwards,
-        pacmanPatrol 4s ease-in-out infinite;
+        pacmanPatrol 5s linear infinite;
     animation-delay:
         0s,
         1.5s;
@@ -146,7 +154,7 @@ h1 {
    PACMAN MOVEMENT
 ========================= */
 
-/* Initial drop */
+/* Initial entry drop */
 @keyframes pacmanDrop {
     0% {
         transform: translateY(-250px);
@@ -158,15 +166,15 @@ h1 {
     }
 }
 
-/* Continuous movement with expanded boundary limits */
+/* Verified linear patrol path boundaries */
 @keyframes pacmanPatrol {
     0% {
-        transform: translateX(0);
+        transform: translateX(-330px);
     }
     50% {
-        transform: translateX(320px);
+        transform: translateX(330px);
     }
     100% {
-        transform: translateX(-320px);
+        transform: translateX(-330px);
     }
 }

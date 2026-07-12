@@ -1,13 +1,7 @@
-console.log("PACMAN JS LOADED");
-
-
 function startPacmanAnimation(){
 
     const pacman =
     document.getElementById("pacman");
-
-
-    console.log("Pacman element:", pacman);
 
 
     if(!pacman){
@@ -26,9 +20,6 @@ function startPacmanAnimation(){
 window.addEventListener(
 "DOMContentLoaded",
 ()=>{
-
-    console.log("DOM READY");
-
 
     setTimeout(
         startPacmanAnimation,
