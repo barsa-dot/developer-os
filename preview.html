@@ -1,48 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<title>BARSA OS</title>
-<link rel="stylesheet" href="./styles/main.css">
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>BARSA OS</title>
+
+    <link rel="stylesheet"
+          href="./styles/main.css">
+
 </head>
 
 <body>
 
-<div id="arcade-frame">
+    <main id="boot-screen">
 
-    <h1>
-        BARSA OS
-    </h1>
+        <header id="hero">
 
-    <p id="edition">
-        Developer Arcade Edition
-    </p>
+            <h1>BARSA OS</h1>
 
-    <div id="pacman-layer">
-        <div id="pacman-drop">
+            <p id="edition">
+                Developer Arcade Edition
+            </p>
+
+        </header>
+
+        <section id="arcade-lane">
+
             <img
                 id="pacman"
                 src="./assets/arcade/svg/pacman.svg"
                 alt="Pac-Man">
-        </div>
-    </div>
 
-    <div id="mini-container"></div>
+        </section>
 
-    <p id="press-start">
-        PRESS START
-    </p>
+        <section id="terminal">
 
-    <div id="terminal-line">
-        <img
-            id="mini-agent"
-            src="./assets/arcade/svg/pacman-mini.svg"
-            alt="Mini Pac-Man">
-        <pre id="boot-text"></pre>
-    </div>
+            <pre id="boot-text"></pre>
 
-</div>
+        </section>
 
-<script src="./engine/pacman.js"></script>
-<script src="./engine/terminal.js"></script>
+        <footer>
+
+            <p id="press-start">
+                PRESS START
+            </p>
+
+        </footer>
+
+    </main>
+
+    <script src="./engine/pacman.js"></script>
+    <script src="./engine/terminal.js"></script>
+
 </body>
+
 </html>
