@@ -47,6 +47,44 @@ body {
     align-items: center;
 }
 
+/* ======================================
+   HERO
+====================================== */
+
+#hero{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+h1{
+
+    font-size:64px;
+
+    color:#FFD400;
+
+    letter-spacing:8px;
+
+    text-transform:uppercase;
+
+}
+
+#edition{
+
+    color:#00CFFF;
+
+    font-size:20px;
+
+    letter-spacing:3px;
+
+}
+
 #arcade-frame {
     width: 900px;
     height: 600px;
