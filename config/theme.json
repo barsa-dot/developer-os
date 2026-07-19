@@ -1,6 +1,24 @@
-{
-  "background": "#000000",
-  "primary": "#FFD700",
-  "secondary": "#1F6FEB",
-  "text": "#FFFFFF"
-}
+/**
+ * BARSA OS v2 - Theme & Configuration Matrix
+ * Acts as the centralized configuration object for runtime options.
+ */
+
+const BarsaConfig = {
+    theme: {
+        glow: true,
+        arcadeMode: true,
+        scanlines: true,
+        colors: {
+            bg: "#030508",
+            yellow: "#ffd900",
+            blue: "#008cff",
+            green: "#00ff66",
+            cyan: "#00f3ff"
+        }
+    },
+    hudData: {
+        projects: 8,
+        stack: 12,
+        commits: 342
+    }
+};
