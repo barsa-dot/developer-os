@@ -1,62 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>BARSA OS</title>
-
-    <link rel="stylesheet"
-          href="./styles/main.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BARSA OS v2 - Arcade Edition</title>
+    <link rel="stylesheet" href="styles/main.css">
 </head>
-
 <body>
-
-    <main id="boot-screen">
-
-        <header id="hero">
-
-            <h1>BARSA OS</h1>
-
-            <p id="edition">
-                Developer Arcade Edition
-            </p>
-
+    <!-- Cyber Arcade Grid & Particle Background Layer -->
+    <div class="cyber-bg">
+        <div class="grid-floor"></div>
+        <div class="ambient-glow"></div>
+    </div>
+    
+    <!-- Physical Arcade Screen Wrapper -->
+    <main class="os-container">
+        
+        <!-- Boot Logo Module -->
+        <header class="logo">
+            <div class="logo-symbol">◆</div>
+            <h1><span>BARSA</span><span>OS</span></h1>
+            <p class="subtitle">DEVELOPER ARCADE EDITION</p>
         </header>
 
-        <section id="arcade-lane">
-
-            <img
-                id="pacman"
-                src="./assets/arcade/svg/pacman.svg"
-                alt="Pac-Man">
-
+        <!-- Upgraded Arcade Grid Lane -->
+        <section class="arcade-lane">
+            <div class="lane-grid-lines"></div>
+            <div class="pacman-wrapper" id="pacman">
+                <svg viewBox="0 0 100 100" class="pacman-svg">
+                    <path d="M50,50 L100,20 A50,50 0 1,0 100,80 Z" fill="var(--yellow)" id="pacman-mouth"/>
+                </svg>
+            </div>
+            <div class="pacman-trail" id="pacman-trail"></div>
         </section>
 
-        <section id="terminal">
+        <!-- Main Dashboard Split Layout -->
+        <div class="dashboard-core">
+            
+            <!-- Upgraded Developer Console Box -->
+            <section class="terminal-window">
+                <div class="terminal-header">
+                    <div class="window-dots"><span></span><span></span><span></span></div>
+                    <div class="header-title">SYSTEM LOG</div>
+                </div>
+                <div class="terminal-body">
+                    <pre id="boot-text"></pre>
+                    <span class="cursor" id="terminal-cursor"></span>
+                </div>
+            </section>
 
-            <pre id="boot-text"></pre>
+            <!-- Floating Right HUD Element Layer -->
+            <aside class="hud-panel">
+                <div class="hud-group">
+                    <div class="hud-label">STATUS</div>
+                    <div class="hud-value status-online">ONLINE <span class="pulse-dot">●</span></div>
+                </div>
+                <div class="hud-group">
+                    <div class="hud-label">PROJECTS</div>
+                    <div class="hud-value" id="hud-projects">00</div>
+                </div>
+                <div class="hud-group">
+                    <div class="hud-label">TECH STACK</div>
+                    <div class="hud-value" id="hud-stack">00</div>
+                </div>
+                <div class="hud-group">
+                    <div class="hud-label">COMMITS</div>
+                    <div class="hud-value" id="hud-commits">000</div>
+                </div>
+            </aside>
+        </div>
 
-        </section>
-
-        <footer>
-
-            <p id="press-start">
-                PRESS START
-            </p>
-
+        <!-- System Footer -->
+        <footer class="footer">
+            <div class="press-start" id="start-prompt">BOOT SEQUENCE RUNNING</div>
+            <div class="version-info">v2.0-ARCADE</div>
         </footer>
-
     </main>
 
-    <script src="./engine/pacman.js"></script>
-    <script src="./engine/terminal.js"></script>
-
+    <!-- Core Script Pipeline -->
+    <script src="engine/theme.js"></script>
+    <script src="engine/pacman.js"></script>
+    <script src="engine/terminal.js"></script>
 </body>
-
 </html>
