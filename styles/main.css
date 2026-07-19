@@ -61,12 +61,15 @@ h1{
     animation: pacmanDrop 1.5s ease forwards;
 }
 /* Child image element explicitly handles the horizontal loop sequence */
-#pacman {
-    width: 90px;
-    position: relative;
-    z-index: 5;
-    animation: pacmanPatrol 5s linear infinite;
-    animation-delay: 1.5s;
+#pacman{
+    width:80px;
+    position:relative;
+    z-index:5;
+    filter:
+        drop-shadow(0 0 8px #FFD700);
+    animation:
+        pacmanPatrol 5s linear infinite;
+    animation-delay:1.5s;
 }
 #press-start {
     color: #FFD700;
@@ -166,13 +169,13 @@ h1 {
         transform: translateX(0);
     }
     25% {
-        transform: translateX(330px);
+    transform: translateX(300px);
     }
     50% {
         transform: translateX(0);
     }
     75% {
-        transform: translateX(-330px);
+    transform: translateX(-300px);
     }
     100% {
         transform: translateX(0);
