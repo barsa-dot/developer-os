@@ -1,10 +1,10 @@
 {
-  "boot": [
-    "Initializing BARSA OS...",
-    "Loading developer profile...",
-    "Connecting GitHub...",
-    "Loading projects...",
-    "Mounting workspace...",
-    "Workspace ready."
-  ]
+  "help": "Display operational system parameters and structural shell hooks.",
+  "about": "Learn history concerning system architect profile index matrix mappings.",
+  "projects": "Print local portfolio items and full-stack software assets.",
+  "skills": "Audit technology domain clusters currently verified inside active memory blocks.",
+  "github": "Force active synchronization with target user endpoints.",
+  "resume": "Generate remote deployment targets for career trajectory documentation summaries.",
+  "contact": "Secure direct communication link frequencies to root supervisor.",
+  "clear": "Purge active operational frame visualization caches."
 }

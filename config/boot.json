@@ -1,12 +1,9 @@
 {
-  "system": "BARSA OS",
-  "edition": "Developer Arcade Edition",
-
-  "version": "1.0.0",
-
-  "bootDelay": 1200,
-
-  "typingSpeed": 55,
-
-  "cursorBlinkSpeed": 500
+  "systemName": "BARSA.DOT",
+  "version": "2.0.26",
+  "introDelay": 1000,
+  "coinTimeout": 2000,
+  "powerOnDelay": 2000,
+  "arcadeVelocity": 2.5,
+  "gitHubTargetAccount": "github"
 }
