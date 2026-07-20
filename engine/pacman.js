@@ -1,232 +1,149 @@
 /**
- * BARSA OS v2 - Corner-Locked Grid Engine
- * Explicitly forces dot spawns into the absolute corner coordinates.
+ * BARSA OS v2 - Complete Path Trajectory Loop Routing Engine
  */
 
 const PacmanEngine = (() => {
-    let arena = null;
-    let dotsLayer = null;
-    let pacman = null;
-    let mouth = null;
-    let scoreVal = null;
+    const TRACK_PAD = 24;
+    const COLLISION_RADIUS = 22;
+    const VELOCITY_STEP = 2.4;
+
+    let state = {
+        w: 0, h: 0, totalLen: 0, distance: 0, mouth: 0,
+        pellets: [], isLive: false, lapDispatched: false
+    };
+
+    let DOM = { arena: null, layer: null, pacman: null, mouth: null, score: null };
+    let wakaAudio = null;
 
     const ghosts = [
-        { id: 'blinky', el: null, pupilsL: null, pupilsR: null, offset: 35 },
-        { id: 'pinky',   el: null, pupilsL: null, pupilsR: null, offset: 70 },
-        { id: 'inky',    el: null, pupilsL: null, pupilsR: null, offset: 105 }
+        { id: 'blinky', el: null, offset: 40, dx: 1, dy: 0 },
+        { id: 'pinky',   el: null, offset: 80, dx: 1, dy: 0 },
+        { id: 'inky',    el: null, offset: 120, dx: 1, dy: 0 }
     ];
 
-    let pathPoints = [];
-    let dots = [];
-    
-    let pacmanDistance = 0;
-    const velocity = 2.0; 
-    let score = 0;
-    let totalPathLength = 0;
-    let mouthCycle = 0;
-
-    let arenaWidth = 0;
-    let arenaHeight = 0;
-    const pad = 24; // Track alignment constant
-
-    const initialize = () => {
-        arena = document.getElementById('game-arena');
-        dotsLayer = document.getElementById('dots-layer');
-        pacman = document.getElementById('pacman');
-        mouth = document.getElementById('pacman-mouth');
-        scoreVal = document.getElementById('hud-score');
-
-        ghosts.forEach(g => {
-            g.el = document.getElementById(g.id);
-            if (g.el) {
-                g.pupilsL = g.el.querySelector('.ghost-pupil-l');
-                g.pupilsR = g.el.querySelector('.ghost-pupil-r');
-            }
-        });
-
-        if (!arena || !pacman) return;
-
-        arena.style.overflow = "hidden";
-        arenaWidth = arena.getBoundingClientRect().width;
-        arenaHeight = arena.getBoundingClientRect().height;
-
-        pacman.style.top = "0px";
-        pacman.style.left = "0px";
-        ghosts.forEach(g => {
-            if (g.el) {
-                g.el.style.top = "0px";
-                g.el.style.left = "0px";
-            }
-        });
-
-        calculateWaypoints();
-        spawnPelletGrid();
-        
-        setTimeout(() => {
-            requestAnimationFrame(updateLoop);
-        }, 1200);
+    const init = () => {
+        wakaAudio = document.getElementById('snd-waka');
+        window.addEventListener('startArcadeCinematic', bootSimulationEngine);
     };
 
-    const calculateWaypoints = () => {
-        const w = arenaWidth;
-        const h = arenaHeight;
-
-        pathPoints = [
-            { x: pad,     y: pad },       
-            { x: w - pad, y: pad },       
-            { x: w - pad, y: h - pad },   
-            { x: pad,     y: h - pad }    
-        ];
-
-        totalPathLength = (w - pad * 2) * 2 + (h - pad * 2) * 2;
+    const bootSimulationEngine = () => {
+        cacheDOM();
+        configureDimensions();
+        buildPelletGrid();
+        state.isLive = true;
+        if(wakaAudio) wakaAudio.play().catch(()=>{});
+        requestAnimationFrame(runtimeLoop);
     };
 
-    const getPointAtDistance = (dist) => {
-        let d = dist % totalPathLength;
-        if (d < 0) d += totalPathLength;
+    const cacheDOM = () => {
+        DOM.arena = document.getElementById('game-arena');
+        DOM.layer = document.getElementById('dots-layer');
+        DOM.pacman = document.getElementById('pacman');
+        DOM.mouth = document.getElementById('pacman-mouth');
+        DOM.score = document.getElementById('hud-score');
+        ghosts.forEach(g => g.el = document.getElementById(g.id));
+    };
 
-        const w = arenaWidth;
-        const h = arenaHeight;
+    const configureDimensions = () => {
+        state.w = DOM.arena.getBoundingClientRect().width;
+        state.h = DOM.arena.getBoundingClientRect().height;
+        state.totalLen = (state.w - TRACK_PAD * 2) * 2 + (state.h - TRACK_PAD * 2) * 2;
+    };
 
-        const topLen = w - pad * 2;
-        const rightLen = h - pad * 2;
-        const botLen = w - pad * 2;
+    const getTrajectoryPoint = (dist) => {
+        let d = dist % state.totalLen;
+        if (d < 0) d += state.totalLen;
 
-        if (d < topLen) {
-            return { x: pad + d, y: pad, angle: 0, dirX: 1, dirY: 0 };
-        } else if (d < topLen + rightLen) {
-            return { x: w - pad, y: pad + (d - topLen), angle: 90, dirX: 0, dirY: 1 };
-        } else if (d < topLen + rightLen + botLen) {
-            return { x: (w - pad) - (d - topLen - rightLen), y: h - pad, angle: 180, dirX: -1, dirY: 0 };
+        const w = state.w; const h = state.h; const p = TRACK_PAD;
+        const top = w - p * 2; const right = h - p * 2; const bot = w - p * 2;
+
+        if (d < top) {
+            return { x: p + d, y: p, deg: 0, kx: 1, ky: 0 };
+        } else if (d < top + right) {
+            return { x: w - p, y: p + (d - top), deg: 90, kx: 0, ky: 1 };
+        } else if (d < top + right + bot) {
+            return { x: (w - p) - (d - top - right), y: h - p, deg: 180, kx: -1, ky: 0 };
         } else {
-            const upProgress = d - topLen - rightLen - botLen;
-            return { x: pad, y: (h - pad) - upProgress, angle: 270, dirX: 0, dirY: -1 };
+            return { x: p, y: (h - p) - (d - top - right - bot), deg: 270, kx: 0, ky: -1 };
         }
     };
 
-    const createDotElement = (x, y) => {
-        const dotEl = document.createElement('div');
-        dotEl.className = 'pellet-dot';
-        dotEl.style.position = 'absolute';
-        dotEl.style.left = `${x}px`;
-        dotEl.style.top = `${y}px`;
-        dotEl.style.transform = "translate(-50%, -50%)";
-        dotsLayer.appendChild(dotEl);
-        return dotEl;
-    };
+    const buildPelletGrid = () => {
+        DOM.layer.innerHTML = "";
+        state.pellets = [];
+        const p = TRACK_PAD;
+        let idCount = 0;
 
-    const spawnPelletGrid = () => {
-        dotsLayer.innerHTML = "";
-        dots = [];
-
-        const w = arenaWidth;
-        const h = arenaHeight;
-        const targetSpacing = 28;
-
-        // 1. Manually add anchor dots into the 4 true corners
-        const corners = [
-            { x: pad,     y: pad },
-            { x: w - pad, y: pad },
-            { x: w - pad, y: h - pad },
-            { x: pad,     y: h - pad }
-        ];
-
+        const corners = [{x:p, y:p}, {x:state.w-p, y:p}, {x:state.w-p, y:state.h-p}, {x:p, y:state.h-p}];
         corners.forEach(c => {
-            const el = createDotElement(c.x, c.y);
-            dots.push({ x: c.x, y: c.y, el: el, eaten: false });
+            const el = document.createElement('div');
+            el.className = 'pellet-dot';
+            el.style.left = `${c.x}px`; el.style.top = `${c.y}px`;
+            el.style.transform = 'translate(-50%, -50%)';
+            DOM.layer.appendChild(el);
+            state.pellets.push({ x: c.x, y: c.y, node: el, eaten: false });
         });
 
-        // 2. Uniformly distribute linear fill segments between the anchors
-        const fillTrack = (x1, y1, x2, y2) => {
-            const dx = x2 - x1;
-            const dy = y2 - y1;
-            const len = Math.sqrt(dx * dx + dy * dy);
-            const count = Math.max(0, Math.floor(len / targetSpacing) - 1);
-            
-            if (count <= 0) return;
-            
-            const stepX = dx / (count + 1);
-            const stepY = dy / (count + 1);
-
-            for (let i = 1; i <= count; i++) {
-                const cx = x1 + stepX * i;
-                const cy = y1 + stepY * i;
-                const el = createDotElement(cx, cy);
-                dots.push({ x: cx, y: cy, el: el, eaten: false });
+        const fill = (x1, y1, x2, y2) => {
+            const len = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+            const count = Math.floor(len / 28) - 1;
+            for(let i=1; i<=count; i++) {
+                const cx = x1 + ((x2-x1)/(count+1))*i;
+                const cy = y1 + ((y2-y1)/(count+1))*i;
+                const el = document.createElement('div');
+                el.className = 'pellet-dot';
+                el.style.left = `${cx}px`; el.style.top = `${cy}px`;
+                el.style.transform = 'translate(-50%, -50%)';
+                DOM.layer.appendChild(el);
+                state.pellets.push({ x: cx, y: cy, node: el, eaten: false });
             }
         };
-
-        // Top line fill
-        fillTrack(pad, pad, w - pad, pad);
-        // Right line fill
-        fillTrack(w - pad, pad, w - pad, h - pad);
-        // Bottom line fill
-        fillTrack(w - pad, h - pad, pad, h - pad);
-        // Left line fill
-        fillTrack(pad, h - pad, pad, pad);
+        fill(p, p, state.w-p, p); fill(state.w-p, p, state.w-p, state.h-p);
+        fill(state.w-p, state.h-p, p, state.h-p); fill(p, state.h-p, p, p);
     };
 
-    const updateLoop = () => {
-        pacmanDistance += velocity;
-        const pacmanPt = getPointAtDistance(pacmanDistance);
+    const runtimeLoop = () => {
+        if (!state.isLive) return;
 
-        pacman.style.transform = `translate3d(calc(${pacmanPt.x}px - 50%), calc(${pacmanPt.y}px - 50%), 0) rotate(${pacmanPt.angle}deg)`;
+        state.distance += VELOCITY_STEP;
+        const pt = getTrajectoryPoint(state.distance);
 
-        checkPelletCollision(pacmanPt.x, pacmanPt.y);
+        DOM.pacman.style.transform = `translate3d(calc(${pt.x}px - 50%), calc(${pt.y}px - 50%), 0) rotate(${pt.deg}deg)`;
 
+        // Handle structural collisions
+        state.pellets.forEach(pellet => {
+            if (pellet.eaten) return;
+            if (Math.sqrt((pellet.x - pt.x)**2 + (pellet.y - pt.y)**2) < COLLISION_RADIUS) {
+                pellet.eaten = true;
+                pellet.node.classList.add('eaten');
+                let curScore = parseInt(DOM.score.innerText) + 100;
+                DOM.score.innerText = curScore.toString().padStart(6, '0');
+            }
+        });
+
+        // Loop execution positions for standard ghost actors
         ghosts.forEach(g => {
             if (!g.el) return;
-            const ghostPt = getPointAtDistance(pacmanDistance - g.offset);
-            
-            g.el.style.transform = `translate3d(calc(${ghostPt.x}px - 50%), calc(${ghostPt.y}px - 50%), 0)`;
-            
-            let lookX = ghostPt.dirX * 3;
-            let lookY = ghostPt.dirY * 3;
-
-            if (g.pupilsL && g.pupilsR) {
-                g.pupilsL.setAttribute('cx', (35 + lookX).toString());
-                g.pupilsL.setAttribute('cy', (55 + lookY).toString());
-                g.pupilsR.setAttribute('cx', (65 + lookX).toString());
-                g.pupilsR.setAttribute('cy', (55 + lookY).toString());
-            }
+            const gPt = getTrajectoryPoint(state.distance - g.offset);
+            g.el.style.transform = `translate3d(calc(${gPt.x}px - 50%), calc(${gPt.y}px - 50%), 0)`;
         });
 
-        mouthCycle += 0.25;
-        const mouthAngle = Math.abs(Math.sin(mouthCycle)) * 42;
-        if (mouthAngle < 3) {
-            mouth.setAttribute('d', 'M50,50 L100,50 A50,50 0 1,0 100,50 Z');
-        } else {
-            mouth.setAttribute('d', `M50,50 L100,${50 - mouthAngle} A50,50 0 1,0 100,${50 + mouthAngle} Z`);
+        // Mouth configurations cycle animations
+        state.mouth += 0.22;
+        const angle = Math.abs(Math.sin(state.mouth)) * 40;
+        DOM.mouth.setAttribute('d', angle < 4 ? 'M50,50 L100,50 A50,50 0 1,0 100,50 Z' : `M50,50 L100,${50 - angle} A50,50 0 1,0 100,${50 + angle} Z`);
+
+        // Frame validation route tracking complete evaluation lap
+        if (state.distance >= state.totalLen && !state.lapDispatched) {
+            state.lapDispatched = true;
+            state.isLive = false;
+            if(wakaAudio) { wakaAudio.pause(); wakaAudio.currentTime = 0; }
+            window.dispatchEvent(new CustomEvent('arcadeLapComplete'));
+            return;
         }
 
-        requestAnimationFrame(updateLoop);
+        requestAnimationFrame(runtimeLoop);
     };
 
-    const checkPelletCollision = (px, py) => {
-        let allEaten = true;
-
-        dots.forEach(d => {
-            if (!d.eaten) {
-                const dx = d.x - px;
-                const dy = d.y - py;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-
-                // Safe collision threshold for locked paths
-                if (distance < 26) { 
-                    d.eaten = true;
-                    d.el.style.opacity = "0";
-                    score += 100;
-                    if (scoreVal) scoreVal.innerText = score.toString().padStart(6, '0');
-                } else {
-                    allEaten = false;
-                }
-            }
-        });
-
-        if (allEaten && dots.length > 0) {
-            spawnPelletGrid();
-        }
-    };
-
-    document.addEventListener('DOMContentLoaded', initialize);
+    document.addEventListener('DOMContentLoaded', init);
 })();
