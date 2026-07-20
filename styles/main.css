@@ -1,407 +1,364 @@
-/* ==========================================================================
-   1. RESET & SYSTEM CORE
-   ========================================================================== */
-*, *::before, *::after {
+/* --- BARSA OS CENTRAL STYLING ENGINE --- */
+
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Press+Start+2P&display=swap');
+
+:root {
+    --bg-black: #020202;
+    --crt-green: #33ff33;
+    --crt-dark-green: #031e03;
+    --arcade-blue: #1919af;
+    --arcade-yellow: #ffea00;
+    --ghost-red: #ff0000;
+    --font-terminal: 'Courier Prime', monospace;
+    --font-arcade: 'Press Start 2P', system-ui;
+}
+
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-:root {
-    --bg: #030508;
-    --yellow: #ffd900;
-    --blue: #008cff;
-    --green: #00ff66;
-    --cyan: #00f3ff;
-    --white: #ffffff;
-    --dimmed: #4a5d78;
-    
-    --shadow: 0 0 25px rgba(0, 140, 255, 0.45);
-    --radius: 24px;
-    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
 body {
-    background-color: var(--bg);
-    color: var(--white);
-    font-family: 'Courier New', Courier, monospace;
-    min-height: 100vh;
+    background-color: #111;
+    color: var(--crt-green);
+    font-family: var(--font-terminal);
+    height: 100vh;
     display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    padding: 20px;
-    perspective: 1000px;
-}
-
-/* ==========================================================================
-   2. CYBER ARCADE BACKGROUND
-   ========================================================================== */
-.cyber-bg {
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-    background: radial-gradient(circle at 50% 30%, #0d1527 0%, var(--bg) 70%);
     overflow: hidden;
 }
 
-.grid-floor {
-    position: absolute;
-    width: 200%;
-    height: 100%;
-    top: 40%;
-    left: -50%;
-    background-image: 
-        linear-gradient(to right, rgba(0, 140, 255, 0.08) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 140, 255, 0.08) 1px, transparent 1px);
-    background-size: 50px 50px;
-    transform: perspective(500px) rotateX(60deg);
-    transform-origin: top center;
-    animation: gridScroll 20s linear infinite;
-}
-
-.ambient-glow {
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 90vw; height: 50vh;
-    background: radial-gradient(circle, rgba(0, 140, 255, 0.12) 0%, transparent 70%);
-    pointer-events: none;
-}
-
-/* ==========================================================================
-   3. MAIN OS CONTAINER (PHYSICAL ARCADE SCREEN)
-   ========================================================================== */
-.os-container {
+/* CRT Frame Chassis Structure Component */
+.crt-frame {
+    width: 96vw;
+    height: 94vh;
+    max-width: 1400px;
+    max-height: 900px;
+    background: #222;
+    border: 12px solid #333;
+    border-radius: 40px;
+    box-shadow: inset 0 0 30px #000, 0 20px 50px rgba(0,0,0,0.8);
     position: relative;
-    width: 780px;
-    height: 580px;
-    background: linear-gradient(145deg, rgba(10, 16, 26, 0.95), rgba(2, 4, 8, 0.98));
-    border-radius: var(--radius);
-    border: 2px solid var(--blue);
-    box-shadow: 
-        0 0 30px rgba(0, 140, 255, 0.35),
-        inset 0 0 40px rgba(0, 140, 255, 0.15),
-        0 20px 50px rgba(0, 0, 0, 0.8);
-    overflow: hidden;
-    backdrop-filter: blur(12px);
-    display: flex;
-    flex-direction: column;
-    padding: 25px;
-    transform: rotateX(2deg);
-    animation: powerOn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards, floatScreen 6s ease-in-out infinite alternate;
+    padding: 8px;
 }
 
-/* CRT Screen Scanline Mask Overlay */
-.os-container::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: 
-        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.02) 1px, transparent 1px, transparent 4px),
-        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
-    background-size: 100% 4px, 100% 3px;
-    pointer-events: none;
-    z-index: 20;
-    animation: screenFlicker 0.15s infinite;
-}
-
-/* ==========================================================================
-   4. BOOT LOGO INTERFACE
-   ========================================================================== */
-.logo {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.logo-symbol {
-    color: var(--cyan);
-    font-size: 1.2rem;
-    text-shadow: 0 0 8px var(--cyan);
-    animation: pulse 2s infinite;
-    margin-bottom: 2px;
-}
-
-.logo h1 {
-    font-size: 2.2rem;
-    letter-spacing: 4px;
-    margin-bottom: 4px;
-}
-
-.logo span:first-child {
-    color: var(--yellow);
-    text-shadow: 0 0 12px rgba(255, 217, 0, 0.6);
-}
-
-.logo span:last-child {
-    color: var(--blue);
-    text-shadow: 0 0 15px rgba(0, 140, 255, 0.7);
-}
-
-.logo .subtitle {
-    color: var(--cyan);
-    font-size: 0.8rem;
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    opacity: 0.8;
-}
-
-/* ==========================================================================
-   5. ARCADE LANE & NEON PACMAN
-   ========================================================================== */
-.arcade-lane {
-    position: relative;
-    width: 100%;
-    height: 32px;
-    border-top: 1px solid rgba(0, 243, 255, 0.4);
-    border-bottom: 1px solid rgba(0, 243, 255, 0.4);
-    background: rgba(0, 140, 255, 0.04);
-    margin-bottom: 20px;
-    overflow: hidden;
-}
-
-.lane-grid-lines {
-    position: absolute;
-    inset: 0;
-    background-image: linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
-    background-size: 20px 100%;
-}
-
-.pacman-wrapper {
-    position: absolute;
-    top: 50%;
-    left: -40px;
-    width: 22px;
-    height: 22px;
-    transform: translateY(-50%);
-    z-index: 5;
-}
-
-.pacman-svg {
+.crt-screen {
     width: 100%;
     height: 100%;
-    filter: drop-shadow(0 0 6px var(--yellow));
-}
-
-.pacman-trail {
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    pointer-events: none;
-    z-index: 4;
-}
-
-.trail-particle {
-    position: absolute;
-    width: 4px; height: 4px;
-    background: var(--cyan);
-    border-radius: 50%;
-    top: 50%;
-    transform: translateY(-50%);
-    box-shadow: 0 0 6px var(--cyan);
-    animation: fadeOutParticle 0.4s forwards;
-}
-
-/* ==========================================================================
-   6. DASHBOARD STRUCTURAL LAYOUT
-   ========================================================================== */
-.dashboard-core {
-    display: flex;
-    flex: 1;
-    gap: 20px;
-    min-height: 0; /* Important for inner terminal overflow scrolling */
-}
-
-/* ==========================================================================
-   7. UPGRADED TERMINAL CONSOLE
-   ========================================================================== */
-.terminal-window {
-    flex: 7;
-    background: rgba(3, 5, 8, 0.85);
-    border: 1px solid rgba(0, 140, 255, 0.3);
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
+    background-color: var(--bg-black);
+    border-radius: 30px;
+    position: relative;
     overflow: hidden;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+    border: 4px solid #111;
+    transition: background-color 0.4s ease;
 }
 
-.terminal-header {
-    background: rgba(10, 20, 38, 0.8);
-    border-bottom: 1px solid rgba(0, 140, 255, 0.2);
-    padding: 10px 15px;
-    display: flex;
-    align-items: center;
+.crt-screen.black-screen {
+    background-color: #000000 !important;
 }
 
-.window-dots {
-    display: flex;
-    gap: 6px;
+/* Scanline / Glass Curvature Overlay Effects */
+.scanlines {
+    position: absolute;
+    top:0; left:0; width:100%; height:100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 4px, 6px 100%;
+    z-index: 99;
+    pointer-events: none;
 }
 
-.window-dots span {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--dimmed);
+.crt-glow {
+    position: absolute;
+    top:0; left:0; width:100%; height:100%;
+    box-shadow: inset 0 0 60px rgba(0, 255, 0, 0.15);
+    pointer-events: none;
+    z-index: 98;
 }
 
-.terminal-header .header-title {
-    margin-left: 20px;
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    color: var(--cyan);
-    font-weight: bold;
-}
-
-.terminal-body {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    font-size: 0.9rem;
-    line-height: 1.6;
-}
-
-.terminal-body pre {
-    white-space: pre-wrap;
-    color: var(--yellow);
-    display: inline;
-}
-
-.terminal-body .tag-status { color: var(--green); font-weight: bold; }
-.terminal-body .tag-system { color: var(--cyan); }
-.terminal-body .tag-accent { color: var(--white); }
-
-.terminal-body .cursor {
-    display: inline-block;
-    width: 8px; height: 16px;
-    background-color: var(--yellow);
-    vertical-align: middle;
-    margin-left: 3px;
-    animation: cursorBlink 0.8s infinite;
-}
-
-/* ==========================================================================
-   8. FLOATING HUD PANEL
-   ========================================================================== */
-.hud-panel {
-    flex: 3;
-    background: rgba(10, 20, 38, 0.4);
-    border: 1px solid rgba(0, 140, 255, 0.15);
-    border-radius: 8px;
-    padding: 20px 15px;
+/* Scene Architecture Containers */
+.scene {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0; left:0;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
 
-.hud-group {
-    border-bottom: 1px dashed rgba(0, 140, 255, 0.2);
-    padding-bottom: 10px;
+.hidden {
+    display: none !important;
 }
 
-.hud-group:last-child { border-bottom: none; }
-
-.hud-label {
-    font-size: 0.7rem;
-    color: var(--dimmed);
-    letter-spacing: 1px;
-    margin-bottom: 4px;
+/* CRT Initialization Micro-animations */
+.crt-power-on {
+    animation: powerOnEffect 450ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
-.hud-value {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: var(--cyan);
-    text-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
-}
-
-.status-online {
-    color: var(--green);
-    text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.pulse-dot {
-    animation: pulse 1.5s infinite;
-}
-
-/* ==========================================================================
-   9. SYSTEM FOOTER
-   ========================================================================== */
-.footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 15px;
-    border-top: 1px dashed rgba(74, 93, 120, 0.3);
-    padding-top: 12px;
-}
-
-.press-start {
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    color: var(--cyan);
-}
-
-.press-start.active {
-    animation: pulse 1.2s ease-in-out infinite;
-    cursor: pointer;
-    text-shadow: 0 0 8px var(--cyan);
-}
-
-.version-info {
-    font-size: 0.75rem;
-    color: var(--dimmed);
-}
-
-/* ==========================================================================
-   10. ANIMATION TIMELINE DECLARATIONS
-   ========================================================================== */
-@keyframes powerOn {
-    0% { transform: scaleY(0.005) scaleX(0); filter: brightness(4); }
-    50% { transform: scaleY(0.005) scaleX(1); filter: brightness(2); }
+@keyframes powerOnEffect {
+    0% { transform: scaleY(0.005) scaleX(0); filter: brightness(5); background: #fff; }
+    50% { transform: scaleY(0.005) scaleX(1); filter: brightness(3); background: #fff; }
     100% { transform: scaleY(1) scaleX(1); filter: brightness(1); }
 }
 
-@keyframes floatScreen {
-    0% { transform: rotateX(2deg) translateY(0px); }
-    100% { transform: rotateX(2deg) translateY(-8px); }
+/* SCENE 2: Coin Window Prompts */
+.coin-prompt {
+    margin: auto;
+    text-align: center;
+    font-family: var(--font-arcade);
+}
+.coin-prompt h1 {
+    font-size: 2.5rem;
+    color: var(--arcade-yellow);
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px var(--arcade-yellow);
+}
+.sub-prompt {
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+.blink-text {
+    animation: textBlink 800ms steps(2, start) infinite;
+}
+@keyframes textBlink { to { visibility: hidden; } }
+
+/* SCENE 4-6: Custom Layout Arcade HUD & Map Tracks */
+.arcade-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-arcade);
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+    color: #fff;
+}
+.color-pink { color: #ffb8ff !important; }
+.color-yellow { color: var(--arcade-yellow) !important; }
+.color-green { color: var(--crt-green) !important; }
+.color-blue { color: #00ffff !important; }
+
+#game-arena {
+    flex: 1;
+    border: 4px solid var(--arcade-blue);
+    border-radius: 16px;
+    position: relative;
+    background-color: #000;
+    box-shadow: 0 0 15px rgba(25, 25, 175, 0.6);
 }
 
-@keyframes gridScroll {
-    0% { background-position: 0 0; }
-    100% { background-position: 0 1000px; }
+.maze-wall {
+    position: absolute;
+    background-color: var(--arcade-blue);
+    box-shadow: 0 0 8px var(--arcade-blue);
+}
+.top-wall { top: 40px; left: 40px; right: 40px; height: 8px; border-radius: 4px; }
+.bottom-wall { bottom: 40px; left: 40px; right: 40px; height: 8px; border-radius: 4px; }
+.ghost-house {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px; height: 50px;
+    border: 4px solid var(--arcade-blue);
+    border-radius: 8px;
 }
 
-@keyframes screenFlicker {
-    0% { opacity: 0.98; }
-    50% { opacity: 1; }
-    100% { opacity: 0.99; }
+/* Character Vectors Asset Engine Mapping */
+.actor {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    z-index: 10;
+}
+.ghost { z-index: 9; }
+
+/* Interactive Pellets Design Config */
+.pellet-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #ffb8ae;
+    border-radius: 50%;
+    position: absolute;
+    box-shadow: 0 0 8px #ffb8ae;
+    transform-origin: center center;
+    transition: opacity 200ms ease, transform 200ms ease;
+    will-change: transform, opacity;
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
+@keyframes pelletConsume {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(0.6); opacity: 0.4; }
+    100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+}
+.pellet-dot.eaten {
+    animation: pelletConsume 200ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
 }
 
-@keyframes cursorBlink {
-    0%, 100% { opacity: 0; }
-    50% { opacity: 1; }
+/* SCENE 7: Rearranged Brand Logo Animations */
+.logo-wrap {
+    margin: auto;
+    text-align: center;
+}
+.logo-font {
+    font-family: var(--font-arcade);
+    font-size: 4rem;
+    color: #fff;
+    text-shadow: 0 0 20px var(--crt-green);
+    animation: logoBounce 1.5s ease infinite alternate;
+}
+@keyframes logoBounce {
+    0% { transform: translateY(0); text-shadow: 0 0 15px var(--crt-green); }
+    100% { transform: translateY(-15px); text-shadow: 0 0 35px #00ffff; }
 }
 
-@keyframes fadeOutParticle {
-    0% { opacity: 0.8; transform: translateY(-50%) scale(1); }
-    100% { opacity: 0; transform: translateY(-50%) scale(0.2); }
+/* SCENE 8-11: Full Screen System Workstation Grid Layout */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+    height: 100%;
 }
 
-/* ==========================================================================
-   11. RESPONSIVE MATRIX
-   ========================================================================== */
-@media (max-width: 820px) {
-    body { padding: 10px; overflow-y: auto; }
-    .os-container { width: 100%; height: auto; min-height: 95vh; padding: 15px; transform: none; animation: fadeIn 0.5s forwards; }
-    .dashboard-core { flex-direction: column; }
-    .hud-panel { flex-direction: row; flex-wrap: wrap; justify-content: space-between; }
-    .hud-group { border-bottom: none; }
+.hud-panel {
+    background-color: var(--crt-dark-green);
+    border: 2px solid var(--crt-green);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 15px rgba(51, 255, 51, 0.1);
+}
+
+.panel-header {
+    font-family: var(--font-arcade);
+    font-size: 0.65rem;
+    background-color: var(--crt-green);
+    color: #000;
+    padding: 4px 8px;
+    margin-bottom: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.profile-block img {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    border: 3px solid var(--crt-green);
+    margin-bottom: 10px;
+    background: #000;
+}
+
+.panel-divider {
+    border: 0; height: 1px;
+    background: var(--crt-green);
+    margin: 14px 0;
+    opacity: 0.4;
+}
+
+.hud-table {
+    width: 100%;
+    font-size: 0.85rem;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+.hud-table td { padding: 6px 2px; }
+
+.language-metrics {
+    margin-top: auto;
+}
+.lang-bar-row {
+    margin-bottom: 8px;
+    font-size: 0.75rem;
+}
+.lang-bar-track {
+    height: 6px; background: #113c11;
+    border-radius: 3px; overflow: hidden;
+    margin-top: 4px;
+}
+.lang-bar-fill {
+    height: 100%; background: var(--crt-green);
+    width: 0%; transition: width 1s ease-out;
+}
+
+/* Workspace Console & Repository Deck Configuration Elements */
+.center-workspace {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+    overflow-hidden;
+}
+
+.terminal-panel {
+    background-color: #000;
+    border: 1px solid var(--crt-green);
+    border-radius: 10px;
+    padding: 12px;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+}
+
+.terminal-output {
+    flex: 1;
+    overflow-y: auto;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    padding-right: 4px;
+}
+
+.terminal-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-top: 1px solid rgba(51, 255, 51, 0.2);
+    padding-top: 8px;
+}
+.prompt-text { font-weight: bold; color: #fff; font-size: 0.85rem; }
+#term-input {
+    flex: 1; background: transparent;
+    border: none; outline: none;
+    color: var(--crt-green);
+    font-family: var(--font-terminal);
+    font-size: 0.85rem;
+}
+
+.cards-deck {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.repo-card {
+    background-color: rgba(3, 30, 3, 0.4);
+    border: 1px solid rgba(51, 255, 51, 0.3);
+    border-radius: 8px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.repo-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--crt-green);
+    background-color: var(--crt-dark-green);
+}
+.card-title { font-size: 1rem; font-weight: bold; color: #fff; margin-bottom: 6px; }
+.card-desc { font-size: 0.75rem; opacity: 0.8; margin-bottom: 12px; line-height: 1.3; }
+.card-stats { display: flex; gap: 14px; font-size: 0.75rem; color: var(--arcade-yellow); }
+
+/* Slide-in Animations Framework */
+.card-slide-in {
+    animation: slideInNode 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes slideInNode {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
