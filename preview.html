@@ -2,134 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BARSA.DOT // Developer OS</title>
-    <link rel="stylesheet" href="styles/main.css">
+    <title>BARSA OS</title>
+    <link rel="stylesheet" href="./styles/main.css">
 </head>
 <body>
-    <!-- Audio Satisfier Tracks -->
-    <audio id="snd-beep" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
-    <audio id="snd-waka" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav" preload="auto" loop></audio>
 
-    <div class="crt-frame">
-        <div class="crt-screen black-screen" id="monitor-screen">
-            <div class="scanlines"></div>
-            <div class="crt-glow"></div>
-            
-            <!-- SCENE 2: INSERT COIN -->
-            <div id="scene-insert-coin" class="scene hidden">
-                <div class="coin-prompt">
-                    <h1 class="blink-text">INSERT COIN</h1>
-                    <p class="sub-prompt">PRESS ENTER TO START SYSTEM BOOT</p>
-                </div>
+<div id="boot-screen">
+    <div id="arcade-frame">
+
+        <h1>BARSA OS</h1>
+
+        <p id="edition">
+            Developer Arcade Edition
+        </p>
+
+        <!-- Wrapped Pac-Man Layer with Isolated Drop Container -->
+        <div id="pacman-layer">
+            <div id="pacman-drop">
+                <img
+                    id="pacman"
+                    src="./assets/arcade/svg/pacman.svg"
+                    alt="Pac-Man">
             </div>
-
-            <!-- SCENE 4-6: ARCADE ENGINE -->
-            <div id="scene-arcade" class="scene hidden">
-                <div class="arcade-header">
-                    <div class="hud-bit">1UP<br><span id="hud-score">000000</span></div>
-                    <div class="hud-bit text-center">BARSA.DOT<br><span class="level-badge">SYS 2.0</span></div>
-                    <div class="hud-bit text-right">HIGH SCORE<br>999990</div>
-                </div>
-
-                <div id="game-arena">
-                    <div class="maze-wall top-wall"></div>
-                    <div class="maze-wall bottom-wall"></div>
-                    <div class="ghost-house"></div>
-                    <div id="dots-layer"></div>
-                    
-                    <!-- SVG Interactive Characters -->
-                    <div id="pacman" class="actor">
-                        <svg viewBox="0 0 100 100">
-                            <path id="pacman-mouth" fill="#ffea00" d="M50,50 L100,25 A50,50 0 1,0 100,75 Z" />
-                        </svg>
-                    </div>
-
-                    <div id="blinky" class="actor ghost red-ghost">
-                        <svg viewBox="0 0 100 100">
-                            <path fill="#ff0000" d="M10,100 C10,30 90,30 90,100 L80,90 L65,100 L50,90 L35,100 L20,90 Z"/>
-                            <circle cx="35" cy="45" r="12" fill="#fff"/><circle class="ghost-pupil-l" cx="35" cy="45" r="5" fill="#000"/>
-                            <circle cx="65" cy="45" r="12" fill="#fff"/><circle class="ghost-pupil-r" cx="65" cy="45" r="5" fill="#000"/>
-                        </svg>
-                    </div>
-                    <div id="pinky" class="actor ghost pink-ghost">
-                        <svg viewBox="0 0 100 100">
-                            <path fill="#ffb8ff" d="M10,100 C10,30 90,30 90,100 L80,90 L65,100 L50,90 L35,100 L20,90 Z"/>
-                            <circle cx="35" cy="45" r="12" fill="#fff"/><circle class="ghost-pupil-l" cx="35" cy="45" r="5" fill="#000"/>
-                            <circle cx="65" cy="45" r="12" fill="#fff"/><circle class="ghost-pupil-r" cx="65" cy="45" r="5" fill="#000"/>
-                        </svg>
-                    </div>
-                    <div id="inky" class="actor ghost blue-ghost">
-                        <svg viewBox="0 0 100 100">
-                            <path fill="#00ffff" d="M10,100 C10,30 90,30 90,100 L80,90 L65,100 L50,90 L35,100 L20,90 Z"/>
-                            <circle cx="35" cy="45" r="12" fill="#fff"/><circle class="ghost-pupil-l" cx="35" cy="45" r="5" fill="#000"/>
-                            <circle cx="65" cy="45" r="12" fill="#fff"/><circle class="ghost-pupil-r" cx="65" cy="45" r="5" fill="#000"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SCENE 7: BRANDING LOGO INTERACTION -->
-            <div id="scene-logo" class="scene hidden">
-                <div class="logo-wrap">
-                    <h1 class="logo-font" id="logo-text">BARSA.DOT</h1>
-                </div>
-            </div>
-
-            <!-- SCENE 8-11: OS MAIN DASHBOARD WINDOW -->
-            <div id="scene-dashboard" class="scene hidden">
-                <div class="dashboard-grid">
-                    <!-- Left Stats HUD Column -->
-                    <div class="hud-panel card-slide-in">
-                        <div class="panel-header">ARCADE STATUS HUD</div>
-                        <div class="profile-block text-center">
-                            <img id="github-avatar" src="https://placehold.co/150x150/031203/00ff00?text=USER" alt="Avatar">
-                            <h2 id="github-name" class="color-green">BARSA@DEV</h2>
-                            <p id="github-bio">Syncing profile metadata...</p>
-                        </div>
-                        <hr class="panel-divider">
-                        <table class="hud-table">
-                            <tr><td>STATUS:</td><td class="color-green blink-text">ONLINE</td></tr>
-                            <tr><td>REPOSITORIES:</td><td id="hud-repo-count" class="color-yellow">00</td></tr>
-                            <tr><td>SYS STREAK:</td><td id="hud-streak" class="color-pink">Calculating...</td></tr>
-                            <tr><td>CORE STACK:</td><td class="color-blue">FULL-STACK</td></tr>
-                        </table>
-                        <div class="language-metrics" id="language-bars-container">
-                            <!-- Dynamic language loads go here -->
-                        </div>
-                    </div>
-
-                    <!-- Center Primary Operational Console Component -->
-                    <div class="center-workspace">
-                        <div class="terminal-panel card-slide-in">
-                            <div class="panel-header">INTERACTIVE SECURE SHELL SYSTEM v2.06</div>
-                            <div class="terminal-output" id="term-log">
-                                <div class="system-line">BARSA OS Kernel Version 2.0.26 Multi-threaded init complete.</div>
-                                <div class="system-line">Connecting live external repository endpoints...</div>
-                                <div class="sync-banner" id="sync-status">Syncing GitHub Account data... [██████████] 100%</div>
-                            </div>
-                            <div class="terminal-input-row">
-                                <span class="prompt-text">barsa@developer-os:~$</span>
-                                <input type="text" id="term-input" autocomplete="off" autofocus spellcheck="false">
-                            </div>
-                        </div>
-
-                        <!-- Repositories Grid Display Deck -->
-                        <div class="cards-deck" id="repos-deck">
-                            <!-- Dynamic Cards Hydrate here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
-    </div>
 
-    <!-- Engine Scripts Decoupled Pipeline Framework -->
-    <script src="engine/intro.js"></script>
-    <script src="engine/pacman.js"></script>
-    <script src="engine/github.js"></script>
-    <script src="engine/terminal.js"></script>
-    <script src="engine/ui.js"></script>
+        <!-- Added Mini Container -->
+        <div id="mini-container"></div>
+
+        <p id="press-start">
+            PRESS START
+        </p>
+
+        <!-- Two-Column Terminal Row -->
+        <div id="terminal-line">
+            <pre id="boot-text"></pre>
+        </div>
+
+    </div>
+</div>
+
+<!-- Core Engine Scripts -->
+<script src="./engine/sceneManager.js"></script>
+<script src="./engine/pacman.js"></script>
+<script src="./engine/terminal.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Initial boot scene wrapping the existing animation timing
+        const defaultBootScene = {
+            async enter() {
+                setTimeout(() => {
+                    if (typeof window.startBootSequence === "function") {
+                        window.startBootSequence();
+                    }
+                }, 4500);
+            },
+            async exit() {}
+        };
+
+        // Register initial scene via SceneManager
+        window.sceneManager.register("boot", defaultBootScene);
+        window.sceneManager.switchTo("boot");
+    });
+</script>
 </body>
 </html>
