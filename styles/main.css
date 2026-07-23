@@ -1,364 +1,174 @@
-/* --- BARSA OS CENTRAL STYLING ENGINE --- */
-
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Press+Start+2P&display=swap');
-
-:root {
-    --bg-black: #020202;
-    --crt-green: #33ff33;
-    --crt-dark-green: #031e03;
-    --arcade-blue: #1919af;
-    --arcade-yellow: #ffea00;
-    --ghost-red: #ff0000;
-    --font-terminal: 'Courier Prime', monospace;
-    --font-arcade: 'Press Start 2P', system-ui;
-}
-
+/* ==========================
+   BARSA OS Design System
+========================== */
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
 }
 
 body {
-    background-color: #020202;
-    color: var(--crt-green);
-    font-family: var(--font-terminal);
+    background: #050505;
+    color: #F5F5F5;
+    font-family: "Courier New", monospace;
+    overflow: hidden;
+}
+
+#boot-screen {
+    width: 100vw;
     height: 100vh;
     display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     align-items: center;
-    justify-content: center;
-    overflow: hidden;
 }
 
-/* CRT Frame Chassis Structure Component */
-.crt-frame {
-    width: 96vw;
-    height: 94vh;
-    max-width: 1400px;
-    max-height: 900px;
-    background: #222;
-    border: 12px solid #333;
-    border-radius: 40px;
-    box-shadow: inset 0 0 30px #000, 0 20px 50px rgba(0,0,0,0.8);
-    position: relative;
-    padding: 8px;
-}
-
-.crt-screen {
-    width: 100%;
-    height: 100%;
-    background-color: var(--bg-black);
-    border-radius: 30px;
-    position: relative;
-    overflow: hidden;
-    border: 4px solid #111;
-    transition: background-color 0.4s ease;
-}
-
-.crt-screen.black-screen {
-    background-color: #000000 !important;
-}
-
-/* Scanline / Glass Curvature Overlay Effects */
-.scanlines {
-    position: absolute;
-    top:0; left:0; width:100%; height:100%;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    background-size: 100% 4px, 6px 100%;
-    z-index: 99;
-    pointer-events: none;
-}
-
-.crt-glow {
-    position: absolute;
-    top:0; left:0; width:100%; height:100%;
-    box-shadow: inset 0 0 60px rgba(0, 255, 0, 0.15);
-    pointer-events: none;
-    z-index: 98;
-}
-
-/* Scene Architecture Containers */
-.scene {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top:0; left:0;
-    padding: 24px;
+/* ==========================
+   ARCADE FRAME & HUD
+========================== */
+#arcade-frame {
+    width: 900px;
+    height: 650px;
+    overflow: visible;
+    border: 8px solid #1F6FEB;
+    box-shadow: 0 0 20px #1F6FEB;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    color: white;
 }
 
-.hidden {
-    display: none !important;
-}
-
-/* CRT Initialization Micro-animations */
-.crt-power-on {
-    animation: powerOnEffect 450ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-
-@keyframes powerOnEffect {
-    0% { transform: scaleY(0.005) scaleX(0); filter: brightness(5); background: #fff; }
-    50% { transform: scaleY(0.005) scaleX(1); filter: brightness(3); background: #fff; }
-    100% { transform: scaleY(1) scaleX(1); filter: brightness(1); }
-}
-
-/* SCENE 2: Coin Window Prompts */
-.coin-prompt {
-    margin: auto;
-    text-align: center;
-    font-family: var(--font-arcade);
-}
-.coin-prompt h1 {
-    font-size: 2.5rem;
-    color: var(--arcade-yellow);
-    margin-bottom: 20px;
-    text-shadow: 0 0 10px var(--arcade-yellow);
-}
-.sub-prompt {
-    font-size: 0.9rem;
-    letter-spacing: 2px;
-}
-.blink-text {
-    animation: textBlink 800ms steps(2, start) infinite;
-}
-@keyframes textBlink { to { visibility: hidden; } }
-
-/* SCENE 4-6: Custom Layout Arcade HUD & Map Tracks */
-.arcade-header {
+#arcade-hud {
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    font-family: var(--font-arcade);
-    font-size: 0.8rem;
-    margin-bottom: 12px;
-    color: #fff;
-}
-.color-pink { color: #ffb8ff !important; }
-.color-yellow { color: var(--arcade-yellow) !important; }
-.color-green { color: var(--crt-green) !important; }
-.color-blue { color: #00ffff !important; }
-
-#game-arena {
-    flex: 1;
-    border: 4px solid var(--arcade-blue);
-    border-radius: 16px;
-    position: relative;
-    background-color: #000;
-    box-shadow: 0 0 15px rgba(25, 25, 175, 0.6);
-}
-
-.maze-wall {
-    position: absolute;
-    background-color: var(--arcade-blue);
-    box-shadow: 0 0 8px var(--arcade-blue);
-}
-.top-wall { top: 40px; left: 40px; right: 40px; height: 8px; border-radius: 4px; }
-.bottom-wall { bottom: 40px; left: 40px; right: 40px; height: 8px; border-radius: 4px; }
-.ghost-house {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80px; height: 50px;
-    border: 4px solid var(--arcade-blue);
-    border-radius: 8px;
-}
-
-/* Character Vectors Asset Engine Mapping */
-.actor {
-    position: absolute;
-    width: 32px;
-    height: 32px;
-    z-index: 10;
-}
-.ghost { z-index: 9; }
-
-/* Interactive Pellets Design Config */
-.pellet-dot {
-    width: 8px;
-    height: 8px;
-    background-color: #ffb8ae;
-    border-radius: 50%;
-    position: absolute;
-    box-shadow: 0 0 8px #ffb8ae;
-    transform-origin: center center;
-    transition: opacity 200ms ease, transform 200ms ease;
-    will-change: transform, opacity;
-}
-
-@keyframes pelletConsume {
-    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    50% { transform: translate(-50%, -50%) scale(0.6); opacity: 0.4; }
-    100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-}
-.pellet-dot.eaten {
-    animation: pelletConsume 200ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    pointer-events: none;
-}
-
-/* SCENE 7: Rearranged Brand Logo Animations */
-.logo-wrap {
-    margin: auto;
-    text-align: center;
-}
-.logo-font {
-    font-family: var(--font-arcade);
-    font-size: 4rem;
-    color: #fff;
-    text-shadow: 0 0 20px var(--crt-green);
-    animation: logoBounce 1.5s ease infinite alternate;
-}
-@keyframes logoBounce {
-    0% { transform: translateY(0); text-shadow: 0 0 15px var(--crt-green); }
-    100% { transform: translateY(-15px); text-shadow: 0 0 35px #00ffff; }
-}
-
-/* SCENE 8-11: Full Screen System Workstation Grid Layout */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 20px;
-    height: 100%;
-}
-
-.hud-panel {
-    background-color: var(--crt-dark-green);
-    border: 2px solid var(--crt-green);
-    border-radius: 12px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 0 15px rgba(51, 255, 51, 0.1);
-}
-
-.panel-header {
-    font-family: var(--font-arcade);
-    font-size: 0.65rem;
-    background-color: var(--crt-green);
-    color: #000;
-    padding: 4px 8px;
-    margin-bottom: 16px;
+    align-items: center;
+    font-family: monospace;
     font-weight: bold;
-    border-radius: 4px;
-    text-align: center;
+    padding: 0 10px;
 }
 
-.profile-block img {
-    width: 90px; height: 90px;
-    border-radius: 50%;
-    border: 3px solid var(--crt-green);
-    margin-bottom: 10px;
-    background: #000;
+#game-title {
+    color: #FFD700;
+    font-size: 36px;
+    letter-spacing: 6px;
 }
 
-.panel-divider {
-    border: 0; height: 1px;
-    background: var(--crt-green);
-    margin: 14px 0;
-    opacity: 0.4;
+.hud-item {
+    color: #FF0000;
+    font-size: 16px;
 }
 
-.hud-table {
+.hud-item span {
+    color: #FFFFFF;
+    margin-left: 8px;
+}
+
+/* ==========================
+   ARCADE ARENA & LAYERS
+========================== */
+#arcade-arena {
+    position: relative;
     width: 100%;
-    font-size: 0.85rem;
-    border-collapse: collapse;
-    margin-bottom: 15px;
-}
-.hud-table td { padding: 6px 2px; }
-
-.language-metrics {
-    margin-top: auto;
-}
-.lang-bar-row {
-    margin-bottom: 8px;
-    font-size: 0.75rem;
-}
-.lang-bar-track {
-    height: 6px; background: #113c11;
-    border-radius: 3px; overflow: hidden;
-    margin-top: 4px;
-}
-.lang-bar-fill {
-    height: 100%; background: var(--crt-green);
-    width: 0%; transition: width 1s ease-out;
+    height: 280px;
+    border: 2px dashed #1F6FEB;
+    overflow: hidden;
+    margin: 10px 0;
 }
 
-/* Workspace Console & Repository Deck Configuration Elements */
-.center-workspace {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+#maze-layer,
+#pellet-layer,
+#character-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    overflow-hidden;
 }
 
-.terminal-panel {
-    background-color: #000;
-    border: 1px solid var(--crt-green);
-    border-radius: 10px;
-    padding: 12px;
-    height: 220px;
+#maze-layer { z-index: 1; }
+#pellet-layer { z-index: 2; }
+#character-layer {
+    z-index: 3;
     display: flex;
-    flex-direction: column;
-}
-
-.terminal-output {
-    flex: 1;
-    overflow-y: auto;
-    font-size: 0.85rem;
-    line-height: 1.4;
-    margin-bottom: 8px;
-    padding-right: 4px;
-}
-
-.terminal-input-row {
-    display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 8px;
-    border-top: 1px solid rgba(51, 255, 51, 0.2);
-    padding-top: 8px;
-}
-.prompt-text { font-weight: bold; color: #fff; font-size: 0.85rem; }
-#term-input {
-    flex: 1; background: transparent;
-    border: none; outline: none;
-    color: var(--crt-green);
-    font-family: var(--font-terminal);
-    font-size: 0.85rem;
 }
 
-.cards-deck {
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 14px;
-    overflow-y: auto;
-    padding-right: 4px;
-}
-
-.repo-card {
-    background-color: rgba(3, 30, 3, 0.4);
-    border: 1px solid rgba(51, 255, 51, 0.3);
-    border-radius: 8px;
-    padding: 14px;
+/* ==========================
+   PACMAN MOVEMENT
+========================== */
+#pacman-drop {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    justify-content: center;
+    align-items: center;
+    animation: pacmanDrop 1.5s ease forwards;
 }
-.repo-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--crt-green);
-    background-color: var(--crt-dark-green);
-}
-.card-title { font-size: 1rem; font-weight: bold; color: #fff; margin-bottom: 6px; }
-.card-desc { font-size: 0.75rem; opacity: 0.8; margin-bottom: 12px; line-height: 1.3; }
-.card-stats { display: flex; gap: 14px; font-size: 0.75rem; color: var(--arcade-yellow); }
 
-/* Slide-in Animations Framework */
-.card-slide-in {
-    animation: slideInNode 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+#pacman {
+    width: 70px;
+    position: relative;
+    animation: pacmanPatrol 5s linear infinite;
+    animation-delay: 1.5s;
 }
-@keyframes slideInNode {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+
+#press-start {
+    color: #FFD700;
+    font-size: 18px;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    50% { opacity: 0.3; }
+}
+
+/* ==========================
+   TERMINAL AREA
+========================== */
+#terminal-line {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    height: 120px;
+    margin-top: 10px;
+    align-items: start;
+}
+
+#boot-text {
+    color: #FFD700;
+    font-family: monospace;
+    font-size: 15px;
+    line-height: 1.4;
+    text-align: left;
+    white-space: pre-wrap;
+    margin: 0;
+}
+
+/* ==========================
+   KEYFRAME ANIMATIONS
+========================== */
+@keyframes pacmanDrop {
+    0% {
+        transform: translateY(-200px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pacmanPatrol {
+    0%   { transform: translateX(0); }
+    25%  { transform: translateX(300px); }
+    50%  { transform: translateX(0); }
+    75%  { transform: translateX(-300px); }
+    100% { transform: translateX(0); }
 }

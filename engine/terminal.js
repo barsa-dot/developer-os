@@ -1,63 +1,38 @@
-/**
- * BARSA OS v2 - Interactive Shell Command Environment System Router
- */
+// ===============================
+// BARSA OS Terminal Engine
+// ===============================
 
-const TerminalRouter = (() => {
-    let inputNode = null;
-    let loggerNode = null;
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-    const COMMAND_MATRIX = {
-        help: "Output operational parameters and available secure hooks.",
-        about: "Developer OS Framework v2.0 // Managed by First Year Engineering.",
-        projects: "Active Clusters: [vedic-ai-core], [reva-token-ledger], [jewelry-shop-v2].",
-        skills: "Loaded Modules: JavaScript, TypeScript, Python, FastAPI, React, C Programming.",
-        github: "Active Target Node synchronized with verified accounts securely.",
-        resume: "Binary compiled. Target download payload standard: path/to/portfolio.pdf",
-        contact: "Signal frequencies active. Target routing node: dev@barsa.dot",
-        clear: "Purge terminal line logs."
-    };
+async function typeLine(element, text) {
+    for (let i = 0; i < text.length; i++) {
+        element.innerHTML += text[i];
+        await sleep(55);
+    }
+}
 
-    const init = () => {
-        inputNode = document.getElementById('term-input');
-        loggerNode = document.getElementById('term-log');
-
-        if(inputNode) {
-            inputNode.addEventListener('keydown', handleCommandSubmit);
-        }
-    };
-
-    const handleCommandSubmit = (e) => {
-        if (e.key !== 'Enter') return;
+async function startBootSequence() {
+    const bootText = document.getElementById("boot-text");
+    if (!bootText) return;
+    
+    // Clear terminal stream
+    bootText.innerHTML = "";
+    
+    try {
+        const response = await fetch("./config/commands.json");
+        const commands = await response.json();
         
-        const rawCmd = inputNode.value.trim();
-        inputNode.value = "";
-        if (!rawCmd) return;
-
-        printLine(`barsa@developer-os:~$ ${rawCmd}`, 'prompt-echo');
-        processCommand(rawCmd.toLowerCase());
-    };
-
-    const processCommand = (cmd) => {
-        if (cmd === 'clear') {
-            loggerNode.innerHTML = "";
-            return;
+        for (const line of commands.boot) {
+            await typeLine(bootText, "> " + line);
+            bootText.innerHTML += "\n";
+            await sleep(450);
         }
+    } catch (error) {
+        console.error("Boot sequence failed:", error);
+    }
+}
 
-        if (COMMAND_MATRIX[cmd]) {
-            printLine(COMMAND_MATRIX[cmd], 'system-response');
-        } else {
-            printLine(`Command not found: '${cmd}'. Type 'help' for core subsystem index lists.`, 'error-response');
-        }
-    };
-
-    const printLine = (text, className) => {
-        const row = document.createElement('div');
-        row.className = `term-line ${className || ''}`;
-        row.style.margin = "4px 0";
-        row.innerText = text;
-        loggerNode.appendChild(row);
-        loggerNode.scrollTop = loggerNode.scrollHeight;
-    };
-
-    document.addEventListener('DOMContentLoaded', init);
-})();
+// Expose explicitly for SceneManager
+window.startBootSequence = startBootSequence;
