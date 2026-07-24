@@ -22,9 +22,7 @@
             <div id="maze-layer"></div>
             <div id="pellet-layer"></div>
             <div id="character-layer">
-                <div id="pacman-drop">
-                    <img id="pacman" src="./assets/arcade/svg/pacman.svg" alt="Pac-Man">
-                </div>
+                <img id="pacman" src="./assets/arcade/svg/pacman.svg" alt="Pac-Man">
             </div>
         </div>
 
@@ -44,6 +42,7 @@
 <script src="./engine/maze.js"></script>
 <script src="./engine/pellets.js"></script>
 <script src="./engine/pacman.js"></script>
+<script src="./engine/ghosts.js"></script>
 <script src="./engine/terminal.js"></script>
 
 <!-- Scenes -->
@@ -51,9 +50,21 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        // Render maze paths and generate pellets
+        // Render environment
         if (window.mazeEngine) window.mazeEngine.render();
         if (window.pelletEngine) window.pelletEngine.generate();
+
+        // Initialize Pac-Man Engine
+        if (window.pacmanEngine) {
+            window.pacmanEngine.init();
+            window.pacmanEngine.startPatrol();
+        }
+
+        // Initialize Ghost Engine
+        if (window.ghostEngine) {
+            window.ghostEngine.spawn();
+            window.ghostEngine.startPatrol();
+        }
 
         // Register and initiate scene execution
         window.sceneManager.register("intro", window.introScene);
