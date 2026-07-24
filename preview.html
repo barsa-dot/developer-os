@@ -42,6 +42,7 @@
 <!-- Core Engine Modules -->
 <script src="./engine/sceneManager.js"></script>
 <script src="./engine/maze.js"></script>
+<script src="./engine/pellets.js"></script>
 <script src="./engine/pacman.js"></script>
 <script src="./engine/terminal.js"></script>
 
@@ -50,10 +51,9 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        // Render the maze structure on startup
-        if (window.mazeEngine) {
-            window.mazeEngine.render();
-        }
+        // Render maze paths and generate pellets
+        if (window.mazeEngine) window.mazeEngine.render();
+        if (window.pelletEngine) window.pelletEngine.generate();
 
         // Register and initiate scene execution
         window.sceneManager.register("intro", window.introScene);

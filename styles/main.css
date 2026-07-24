@@ -120,3 +120,23 @@ body {
     white-space: pre-wrap;
     margin: 0;
 }
+
+/* =========================================
+   POWER PELLET ANIMATION (Commit 23)
+========================================= */
+.power-pellet {
+    animation: pelletPulse 0.8s infinite alternate;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+@keyframes pelletPulse {
+    from {
+        opacity: 0.3;
+        r: 5;
+    }
+    to {
+        opacity: 1;
+        r: 8;
+    }
+}
