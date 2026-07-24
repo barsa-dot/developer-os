@@ -140,3 +140,27 @@ body {
         r: 8;
     }
 }
+
+/* Dashboard Grid Layout */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto auto;
+    gap: 12px;
+    padding: 16px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    z-index: 20;
+}
+
+.dash-widget {
+    background: rgba(0, 0, 0, 0.75);
+    border: 2px solid #2121ff;
+    border-radius: 4px;
+    padding: 12px;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 0 8px rgba(33, 33, 255, 0.4);
+    overflow: hidden;
+}
