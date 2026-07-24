@@ -10,40 +10,38 @@
 <div id="boot-screen">
     <div id="arcade-frame">
 
-        <h1>BARSA OS</h1>
+        <!-- HUD -->
+        <header id="arcade-hud">
+            <div class="hud-item">1UP<span id="score">00</span></div>
+            <h1 id="game-title">BARSA.DOT</h1>
+            <div class="hud-item">HIGH<span id="high-score">10000</span></div>
+        </header>
 
-        <p id="edition">
-            Developer Arcade Edition
-        </p>
-
-        <div id="pacman-layer">
-            <div id="pacman-drop">
-                <img
-                    id="pacman"
-                    src="./assets/arcade/svg/pacman.svg"
-                    alt="Pac-Man">
+        <!-- Main Game Arena Container -->
+        <div id="arcade-arena">
+            <div id="maze-layer"></div>
+            <div id="pellet-layer"></div>
+            <div id="character-layer">
+                <div id="pacman-drop">
+                    <img id="pacman" src="./assets/arcade/svg/pacman.svg" alt="Pac-Man">
+                </div>
             </div>
         </div>
 
-        <div id="mini-container"></div>
-
-        <p id="press-start">
-            PRESS START
-        </p>
-
-        <div id="terminal-line">
-            <pre id="boot-text"></pre>
-        </div>
+        <!-- Status Bar & Terminal -->
+        <footer id="status-bar">
+            <span id="press-start">PRESS START</span>
+            <div id="terminal-line">
+                <pre id="boot-text"></pre>
+            </div>
+        </footer>
 
     </div>
 </div>
 
-<!-- Core Engines -->
 <script src="./engine/sceneManager.js"></script>
 <script src="./engine/pacman.js"></script>
 <script src="./engine/terminal.js"></script>
-
-<!-- Scenes -->
 <script src="./engine/scenes/introScene.js"></script>
 
 <script>

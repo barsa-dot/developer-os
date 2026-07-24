@@ -23,69 +23,60 @@ body {
     width: 100vw;
     height: 100vh;
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
 }
 
-/* ==========================
-   ARCADE FRAME & HUD
-========================== */
 #arcade-frame {
-    width: 900px;
-    height: 650px;
-    overflow: visible;
-    border: 8px solid #1F6FEB;
-    box-shadow: 0 0 20px #1F6FEB;
+    width: 800px;
+    height: 600px;
+    border: 6px solid #1F6FEB;
+    box-shadow: 0 0 25px #1F6FEB, inset 0 0 15px #1F6FEB;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    color: white;
+    padding: 16px;
+    background: #000;
 }
 
+/* HUD Header */
 #arcade-hud {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: monospace;
-    font-weight: bold;
     padding: 0 10px;
 }
 
 #game-title {
     color: #FFD700;
-    font-size: 36px;
-    letter-spacing: 6px;
+    font-size: 28px;
+    letter-spacing: 4px;
 }
 
 .hud-item {
-    color: #FF0000;
-    font-size: 16px;
+    color: #FD0000;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .hud-item span {
-    color: #FFFFFF;
+    color: #FFF;
     margin-left: 8px;
 }
 
-/* ==========================
-   ARCADE ARENA & LAYERS
-========================== */
+/* Arena Layering */
 #arcade-arena {
     position: relative;
-    width: 100%;
-    height: 280px;
-    border: 2px dashed #1F6FEB;
+    width: 720px;
+    height: 380px;
+    border: 2px solid #1F6FEB;
+    background: #000;
     overflow: hidden;
-    margin: 10px 0;
 }
 
-#maze-layer,
-#pellet-layer,
-#character-layer {
+#maze-layer, #pellet-layer, #character-layer {
     position: absolute;
     top: 0;
     left: 0;
@@ -95,33 +86,20 @@ body {
 
 #maze-layer { z-index: 1; }
 #pellet-layer { z-index: 2; }
-#character-layer {
-    z-index: 3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+#character-layer { z-index: 3; }
 
-/* ==========================
-   PACMAN MOVEMENT
-========================== */
-#pacman-drop {
+/* Status Bar & Terminal */
+#status-bar {
+    width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    animation: pacmanDrop 1.5s ease forwards;
-}
-
-#pacman {
-    width: 70px;
-    position: relative;
-    animation: pacmanPatrol 5s linear infinite;
-    animation-delay: 1.5s;
+    gap: 8px;
 }
 
 #press-start {
     color: #FFD700;
-    font-size: 18px;
+    font-size: 14px;
     animation: pulse 1s infinite;
 }
 
@@ -129,46 +107,16 @@ body {
     50% { opacity: 0.3; }
 }
 
-/* ==========================
-   TERMINAL AREA
-========================== */
 #terminal-line {
-    display: grid;
-    grid-template-columns: 1fr;
     width: 100%;
-    height: 120px;
-    margin-top: 10px;
-    align-items: start;
+    height: 60px;
+    overflow: hidden;
 }
 
 #boot-text {
     color: #FFD700;
-    font-family: monospace;
-    font-size: 15px;
+    font-size: 13px;
     line-height: 1.4;
-    text-align: left;
     white-space: pre-wrap;
     margin: 0;
-}
-
-/* ==========================
-   KEYFRAME ANIMATIONS
-========================== */
-@keyframes pacmanDrop {
-    0% {
-        transform: translateY(-200px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@keyframes pacmanPatrol {
-    0%   { transform: translateX(0); }
-    25%  { transform: translateX(300px); }
-    50%  { transform: translateX(0); }
-    75%  { transform: translateX(-300px); }
-    100% { transform: translateX(0); }
 }
