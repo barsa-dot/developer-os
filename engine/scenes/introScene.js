@@ -1,17 +1,12 @@
 // ===============================
-// BARSA OS — Intro Scene
+// BARSA OS — Intro Scene Module
 // ===============================
 
 class IntroScene {
     async enter() {
-        console.log("[IntroScene] Powering on arcade frame...");
-        const arcadeFrame = document.getElementById("arcade-frame");
-        if (arcadeFrame) {
-            arcadeFrame.classList.add("power-on");
-        }
-
-        // Wait for power-on animation duration before starting terminal boot
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        console.log("[IntroScene] Starting intro animation...");
+        // Wait for landing animation / power-on
+        await new Promise(resolve => setTimeout(resolve, 4500));
         
         if (window.sceneManager) {
             window.sceneManager.switchTo("terminal");
@@ -19,7 +14,7 @@ class IntroScene {
     }
 
     async exit() {
-        console.log("[IntroScene] Completed.");
+        console.log("[IntroScene] Exiting intro scene.");
     }
 }
 

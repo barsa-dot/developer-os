@@ -16,14 +16,13 @@ async function typeLine(element, text) {
 async function startBootSequence() {
     const bootText = document.getElementById("boot-text");
     if (!bootText) return;
-    
-    // Clear terminal stream
+
     bootText.innerHTML = "";
-    
+
     try {
         const response = await fetch("./config/commands.json");
         const commands = await response.json();
-        
+
         for (const line of commands.boot) {
             await typeLine(bootText, "> " + line);
             bootText.innerHTML += "\n";
@@ -34,5 +33,13 @@ async function startBootSequence() {
     }
 }
 
-// Expose explicitly for SceneManager
+class TerminalScene {
+    async enter() {
+        await startBootSequence();
+    }
+
+    async exit() {}
+}
+
+window.terminalScene = new TerminalScene();
 window.startBootSequence = startBootSequence;
