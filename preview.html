@@ -39,34 +39,40 @@
 
 <!-- Core Engine Modules -->
 <script src="./engine/sceneManager.js"></script>
+<script src="./engine/audio.js"></script>
 <script src="./engine/maze.js"></script>
 <script src="./engine/pellets.js"></script>
 <script src="./engine/pacman.js"></script>
 <script src="./engine/ghosts.js"></script>
-<script src="./engine/terminal.js"></script>
 
-<!-- Scenes -->
+<!-- Phase 2 & 3 Discovery/Dashboard Engines -->
+<script src="./engine/github.js"></script>
+<script src="./engine/logoFormation.js"></script>
+<script src="./engine/dashboardTransform.js"></script>
+<script src="./engine/renderDashboard.js"></script>
+<script src="./engine/activityCenter.js"></script>
+<script src="./engine/repositoryShowcase.js"></script>
+
+<!-- Terminal & Scenes -->
+<script src="./engine/terminal.js"></script>
 <script src="./engine/scenes/introScene.js"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        // Render environment
         if (window.mazeEngine) window.mazeEngine.render();
         if (window.pelletEngine) window.pelletEngine.generate();
 
-        // Initialize Pac-Man Engine
         if (window.pacmanEngine) {
             window.pacmanEngine.init();
             window.pacmanEngine.startPatrol();
         }
 
-        // Initialize Ghost Engine
         if (window.ghostEngine) {
             window.ghostEngine.spawn();
             window.ghostEngine.startPatrol();
         }
 
-        // Register and initiate scene execution
+        // Register scenes
         window.sceneManager.register("intro", window.introScene);
         window.sceneManager.register("terminal", window.terminalScene);
         window.sceneManager.switchTo("intro");
