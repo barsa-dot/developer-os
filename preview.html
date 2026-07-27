@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BARSA OS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BARSA OS — Interactive Portfolio</title>
     <link rel="stylesheet" href="./styles/main.css">
 </head>
 <body>
@@ -45,7 +46,7 @@
 <script src="./engine/pacman.js"></script>
 <script src="./engine/ghosts.js"></script>
 
-<!-- Phase 2 & 3 Discovery/Dashboard Engines -->
+<!-- Phase 2 & 3 Engines -->
 <script src="./engine/github.js"></script>
 <script src="./engine/logoFormation.js"></script>
 <script src="./engine/dashboardTransform.js"></script>
@@ -53,12 +54,36 @@
 <script src="./engine/activityCenter.js"></script>
 <script src="./engine/repositoryShowcase.js"></script>
 
-<!-- Terminal & Scenes -->
+<!-- Phase 4 Interactive Engines -->
+<script src="./engine/interactiveTerminal.js"></script>
+<script src="./engine/commands.js"></script>
+<script src="./engine/autocomplete.js"></script>
+<script src="./engine/history.js"></script>
+<script src="./engine/themes.js"></script>
+<script src="./engine/audioControls.js"></script>
+<script src="./engine/responsive.js"></script>
+
+<!-- Phase 5 Polish & Easter Egg Engines -->
+<script src="./engine/crtShader.js"></script>
+<script src="./engine/particles.js"></script>
+<script src="./engine/optimizer.js"></script>
+<script src="./engine/a11y.js"></script>
+<script src="./engine/konami.js"></script>
+<script src="./engine/miniGame.js"></script>
+<script src="./engine/achievementPopup.js"></script>
+<script src="./engine/easterEggs.js"></script>
+
+<!-- Scenes -->
 <script src="./engine/terminal.js"></script>
 <script src="./engine/scenes/introScene.js"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
+        // Init visual/audio foundations
+        if (window.crtShaderEngine) window.crtShaderEngine.init();
+        if (window.a11yEngine) window.a11yEngine.init();
+        if (window.konamiEngine) window.konamiEngine.listen();
+
         if (window.mazeEngine) window.mazeEngine.render();
         if (window.pelletEngine) window.pelletEngine.generate();
 
@@ -72,7 +97,16 @@
             window.ghostEngine.startPatrol();
         }
 
-        // Register scenes
+        // Init interactive CLI
+        window.interactiveTerminal.init();
+        const cliInput = document.getElementById("cli-input");
+        if (cliInput) {
+            window.autocompleteEngine.attach(cliInput);
+            window.commandHistoryEngine.attach(cliInput);
+        }
+        window.responsiveEngine.init();
+
+        // Orchestrate Scene
         window.sceneManager.register("intro", window.introScene);
         window.sceneManager.register("terminal", window.terminalScene);
         window.sceneManager.switchTo("intro");
