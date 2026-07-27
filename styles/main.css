@@ -164,3 +164,21 @@ body {
     box-shadow: 0 0 8px rgba(33, 33, 255, 0.4);
     overflow: hidden;
 }
+
+/* Responsive Layout Adaptations */
+@media (max-width: 768px) {
+    #arcade-frame {
+        width: 100vw;
+        height: 100vh;
+        border-width: 2px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    #cli-box {
+        font-size: 12px;
+    }
+}
