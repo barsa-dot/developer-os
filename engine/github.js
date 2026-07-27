@@ -7,6 +7,12 @@ class GitHubEngine {
         this.baseUrl = "https://api.github.com";
         this.cache = new Map();
         this.ttl = 300000; // 5-minute cache
+        
+        // -------------------------------------------------------------
+        // YOUR GITHUB PROFILE CONFIGURATION
+        // -------------------------------------------------------------
+        this.username = "barsa-dot";
+        this.profileUrl = "https://github.com/barsa-dot";
     }
 
     async fetchWithCache(endpoint) {
@@ -30,15 +36,16 @@ class GitHubEngine {
         }
     }
 
-    async getUser(username) {
+    // Uses your configured username by default if none is provided
+    async getUser(username = this.username) {
         return await this.fetchWithCache(`/users/${username}`);
     }
 
-    async getRepos(username) {
+    async getRepos(username = this.username) {
         return await this.fetchWithCache(`/users/${username}/repos?sort=updated&per_page=6`);
     }
 
-    async getEvents(username) {
+    async getEvents(username = this.username) {
         return await this.fetchWithCache(`/users/${username}/events?per_page=5`);
     }
 }

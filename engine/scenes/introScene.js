@@ -1,39 +1,46 @@
 // =========================================
-// BARSA OS — Timeline Intro Sequence
+// BARSA OS — Intro Boot Scene Orchestrator
 // =========================================
 
 class IntroScene {
     async enter() {
-        console.log("[IntroScene] Timeline sequence engaged.");
+        console.log("[IntroScene] Starting automated boot sequence...");
+        const terminal = document.getElementById("boot-text");
 
-        // Audio unlock listener
-        if (window.audioEngine) window.audioEngine.init();
+        const bootSteps = [
+            "> INITIALIZING BARSA.DOT OS v2.0...",
+            "> CONNECTING TO NETWORK SERVICES...",
+            "> FETCHING DISCOVERY MODULES...",
+            "> LOADING LIVE DASHBOARD..."
+        ];
 
-        // 1. Play CRT Sound & Flash
-        if (window.audioEngine) window.audioEngine.playCrtPowerOn();
-        await this.delay(600);
-
-        // 2. Play Startup Beeps
-        if (window.audioEngine) {
-            window.audioEngine.playBeep(440, 0.1);
-            await this.delay(150);
-            window.audioEngine.playBeep(880, 0.15);
+        for (let step of bootSteps) {
+            if (terminal) {
+                terminal.innerHTML += `\n${step}`;
+            }
+            await new Promise(r => setTimeout(r, 600));
         }
 
-        await this.delay(1000);
-
-        // 3. Hand off control directly to Terminal Scene
-        if (window.sceneManager) {
-            window.sceneManager.switchTo("terminal");
-        }
+        this.completeBoot();
     }
 
-    delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
+    completeBoot() {
+        console.log("[IntroScene] Boot complete. Transforming to Dashboard...");
 
-    async exit() {
-        console.log("[IntroScene] Sequence finished.");
+        // 1. Form Logo
+        if (window.logoFormationEngine) window.logoFormationEngine.formLogo();
+
+        // 2. Morph maze into dashboard grid
+        if (window.dashboardTransformEngine) window.dashboardTransformEngine.transform();
+
+        // 3. Render live widgets for barsa-dot
+        if (window.dashboardRenderer) window.dashboardRenderer.renderProfile("barsa-dot");
+        if (window.activityCenter) window.activityCenter.render("barsa-dot");
+        if (window.repositoryShowcase) window.repositoryShowcase.render("barsa-dot");
+
+        // 4. Focus interactive terminal
+        const cliInput = document.getElementById("cli-input");
+        if (cliInput) cliInput.focus();
     }
 }
 
