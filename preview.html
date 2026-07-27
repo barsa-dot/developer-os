@@ -26,15 +26,33 @@
             <div id="maze-layer"></div>
             <div id="pellet-layer"></div>
             <div id="character-layer">
-                <img id="pacman" src="./assets/arcade/svg/pacman.svg" alt="Pac-Man">
+                <img id="pacman" src="./assets/arcade/svg/pacman.svg" alt="Pac-Man" style="display:none;">
             </div>
+
+            <!-- Insert Coin Overlay -->
+            <div id="insert-coin-overlay" style="position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:50; cursor:pointer;">
+                <h2 style="color:#FFFF00; font-family:'Press Start 2P'; font-size:16px; animation: blink 1s infinite; margin-bottom:20px;">INSERT COIN</h2>
+                <p style="color:#00FF00; font-family:monospace; font-size:12px;">CLICK ANYWHERE TO START</p>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid Overlay Container -->
+        <div id="dashboard-container" style="display:none;">
+            <div id="widget-profile" class="widget-box"></div>
+            <div id="widget-repos" class="widget-box"></div>
+            <div id="widget-activity" class="widget-box"></div>
+            <div id="widget-achievements" class="widget-box"></div>
         </div>
 
         <!-- Status Bar & Terminal -->
         <footer id="status-bar">
-            <span id="press-start">PRESS START</span>
             <div id="terminal-line">
-                <pre id="boot-text"></pre>
+                <pre id="boot-text">> SYSTEM READY. AWAITING COIN INSERTION...</pre>
+            </div>
+            
+            <div id="cli-box" style="display:none;">
+                <span style="color:#FFFF00; font-weight:bold; margin-right:8px;">visitor@barsa-os:~$</span>
+                <input type="text" id="cli-input" placeholder="type 'help'..." autocomplete="off">
             </div>
         </footer>
 
@@ -42,7 +60,7 @@
 </div>
 
 <!-- ========================================= -->
-<!-- 1. CORE ENGINE MODULES (Phase 1)           -->
+<!-- CORE ENGINE MODULES                       -->
 <!-- ========================================= -->
 <script src="./engine/sceneManager.js"></script>
 <script src="./engine/audio.js"></script>
@@ -51,9 +69,7 @@
 <script src="./engine/pacman.js"></script>
 <script src="./engine/ghosts.js"></script>
 
-<!-- ========================================= -->
-<!-- 2. DISCOVERY & DASHBOARD (Phases 2 & 3)    -->
-<!-- ========================================= -->
+<!-- DISCOVERY & DASHBOARD -->
 <script src="./engine/github.js"></script>
 <script src="./engine/identity.js"></script>
 <script src="./engine/skills.js"></script>
@@ -66,9 +82,7 @@
 <script src="./engine/activityCenter.js"></script>
 <script src="./engine/repositoryShowcase.js"></script>
 
-<!-- ========================================= -->
-<!-- 3. INTERACTIVE SYSTEM (Phase 4)            -->
-<!-- ========================================= -->
+<!-- INTERACTIVE SYSTEM -->
 <script src="./engine/interactiveTerminal.js"></script>
 <script src="./engine/commands.js"></script>
 <script src="./engine/autocomplete.js"></script>
@@ -77,9 +91,7 @@
 <script src="./engine/audioControls.js"></script>
 <script src="./engine/responsive.js"></script>
 
-<!-- ========================================= -->
-<!-- 4. POLISH & EASTER EGGS (Phase 5)          -->
-<!-- ========================================= -->
+<!-- POLISH & SHADERS -->
 <script src="./engine/crtShader.js"></script>
 <script src="./engine/particles.js"></script>
 <script src="./engine/optimizer.js"></script>
@@ -89,59 +101,22 @@
 <script src="./engine/achievementPopup.js"></script>
 <script src="./engine/easterEggs.js"></script>
 
-<!-- ========================================= -->
-<!-- 5. TERMINAL & SCENES                      -->
-<!-- ========================================= -->
+<!-- TERMINAL & SCENES -->
 <script src="./engine/terminal.js"></script>
 <script src="./engine/scenes/introScene.js"></script>
 
-<!-- ========================================= -->
-<!-- BOOT ORCHESTRATOR & EVENT LISTENERS        -->
-<!-- ========================================= -->
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        // 1. Initialize Visual Effects & Accessibility
+        // Prepare global visual hooks
         if (window.crtShaderEngine) window.crtShaderEngine.init();
         if (window.a11yEngine) window.a11yEngine.init();
         if (window.konamiEngine) window.konamiEngine.listen();
 
-        // 2. Render Maze and Pellets
-        if (window.mazeEngine) window.mazeEngine.render();
-        if (window.pelletEngine) window.pelletEngine.generate();
-
-        // 3. Initialize Character Engines
-        if (window.pacmanEngine) {
-            window.pacmanEngine.init();
-            if (typeof window.pacmanEngine.startPatrol === 'function') {
-                window.pacmanEngine.startPatrol();
-            }
-        }
-
-        if (window.ghostEngine) {
-            window.ghostEngine.spawn();
-            if (typeof window.ghostEngine.startPatrol === 'function') {
-                window.ghostEngine.startPatrol();
-            }
-        }
-
-        // 4. Initialize Phase 4 Terminal Interactivity
-        if (window.interactiveTerminal) {
-            window.interactiveTerminal.init();
-            const cliInput = document.getElementById("cli-input");
-            if (cliInput) {
-                if (window.autocompleteEngine) window.autocompleteEngine.attach(cliInput);
-                if (window.commandHistoryEngine) window.commandHistoryEngine.attach(cliInput);
-            }
-        }
-        
-        if (window.responsiveEngine) window.responsiveEngine.init();
-
-        // 5. Register Scenes and Kick off Boot Sequence
-        if (window.sceneManager) {
-            if (window.introScene) window.sceneManager.register("intro", window.introScene);
-            if (window.terminalScene) window.sceneManager.register("terminal", window.terminalScene);
-            window.sceneManager.switchTo("intro");
-        }
+        const overlay = document.getElementById("insert-coin-overlay");
+        overlay.addEventListener("click", () => {
+            overlay.style.display = "none";
+            if (window.introScene) window.introScene.enter();
+        });
     });
 </script>
 </body>
