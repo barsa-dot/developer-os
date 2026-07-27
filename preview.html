@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BARSA OS — Interactive Portfolio</title>
     <link rel="stylesheet" href="./styles/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -13,9 +16,9 @@
 
         <!-- HUD Header -->
         <header id="arcade-hud">
-            <div class="hud-item">1UP<span id="score">00</span></div>
+            <div class="hud-item">1UP <span id="score">00</span></div>
             <h1 id="game-title">BARSA.DOT</h1>
-            <div class="hud-item">HIGH<span id="high-score">10000</span></div>
+            <div class="hud-item">HIGH <span id="high-score">10000</span></div>
         </header>
 
         <!-- Main Game Arena Container -->
@@ -38,7 +41,9 @@
     </div>
 </div>
 
-<!-- Core Engine Modules -->
+<!-- ========================================= -->
+<!-- 1. CORE ENGINE MODULES (Phase 1)           -->
+<!-- ========================================= -->
 <script src="./engine/sceneManager.js"></script>
 <script src="./engine/audio.js"></script>
 <script src="./engine/maze.js"></script>
@@ -46,15 +51,24 @@
 <script src="./engine/pacman.js"></script>
 <script src="./engine/ghosts.js"></script>
 
-<!-- Phase 2 & 3 Engines -->
+<!-- ========================================= -->
+<!-- 2. DISCOVERY & DASHBOARD (Phases 2 & 3)    -->
+<!-- ========================================= -->
 <script src="./engine/github.js"></script>
+<script src="./engine/identity.js"></script>
+<script src="./engine/skills.js"></script>
+<script src="./engine/repositories.js"></script>
+<script src="./engine/activity.js"></script>
+<script src="./engine/achievements.js"></script>
 <script src="./engine/logoFormation.js"></script>
 <script src="./engine/dashboardTransform.js"></script>
 <script src="./engine/renderDashboard.js"></script>
 <script src="./engine/activityCenter.js"></script>
 <script src="./engine/repositoryShowcase.js"></script>
 
-<!-- Phase 4 Interactive Engines -->
+<!-- ========================================= -->
+<!-- 3. INTERACTIVE SYSTEM (Phase 4)            -->
+<!-- ========================================= -->
 <script src="./engine/interactiveTerminal.js"></script>
 <script src="./engine/commands.js"></script>
 <script src="./engine/autocomplete.js"></script>
@@ -63,7 +77,9 @@
 <script src="./engine/audioControls.js"></script>
 <script src="./engine/responsive.js"></script>
 
-<!-- Phase 5 Polish & Easter Egg Engines -->
+<!-- ========================================= -->
+<!-- 4. POLISH & EASTER EGGS (Phase 5)          -->
+<!-- ========================================= -->
 <script src="./engine/crtShader.js"></script>
 <script src="./engine/particles.js"></script>
 <script src="./engine/optimizer.js"></script>
@@ -73,43 +89,59 @@
 <script src="./engine/achievementPopup.js"></script>
 <script src="./engine/easterEggs.js"></script>
 
-<!-- Scenes -->
+<!-- ========================================= -->
+<!-- 5. TERMINAL & SCENES                      -->
+<!-- ========================================= -->
 <script src="./engine/terminal.js"></script>
 <script src="./engine/scenes/introScene.js"></script>
 
+<!-- ========================================= -->
+<!-- BOOT ORCHESTRATOR & EVENT LISTENERS        -->
+<!-- ========================================= -->
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        // Init visual/audio foundations
+        // 1. Initialize Visual Effects & Accessibility
         if (window.crtShaderEngine) window.crtShaderEngine.init();
         if (window.a11yEngine) window.a11yEngine.init();
         if (window.konamiEngine) window.konamiEngine.listen();
 
+        // 2. Render Maze and Pellets
         if (window.mazeEngine) window.mazeEngine.render();
         if (window.pelletEngine) window.pelletEngine.generate();
 
+        // 3. Initialize Character Engines
         if (window.pacmanEngine) {
             window.pacmanEngine.init();
-            window.pacmanEngine.startPatrol();
+            if (typeof window.pacmanEngine.startPatrol === 'function') {
+                window.pacmanEngine.startPatrol();
+            }
         }
 
         if (window.ghostEngine) {
             window.ghostEngine.spawn();
-            window.ghostEngine.startPatrol();
+            if (typeof window.ghostEngine.startPatrol === 'function') {
+                window.ghostEngine.startPatrol();
+            }
         }
 
-        // Init interactive CLI
-        window.interactiveTerminal.init();
-        const cliInput = document.getElementById("cli-input");
-        if (cliInput) {
-            window.autocompleteEngine.attach(cliInput);
-            window.commandHistoryEngine.attach(cliInput);
+        // 4. Initialize Phase 4 Terminal Interactivity
+        if (window.interactiveTerminal) {
+            window.interactiveTerminal.init();
+            const cliInput = document.getElementById("cli-input");
+            if (cliInput) {
+                if (window.autocompleteEngine) window.autocompleteEngine.attach(cliInput);
+                if (window.commandHistoryEngine) window.commandHistoryEngine.attach(cliInput);
+            }
         }
-        window.responsiveEngine.init();
+        
+        if (window.responsiveEngine) window.responsiveEngine.init();
 
-        // Orchestrate Scene
-        window.sceneManager.register("intro", window.introScene);
-        window.sceneManager.register("terminal", window.terminalScene);
-        window.sceneManager.switchTo("intro");
+        // 5. Register Scenes and Kick off Boot Sequence
+        if (window.sceneManager) {
+            if (window.introScene) window.sceneManager.register("intro", window.introScene);
+            if (window.terminalScene) window.sceneManager.register("terminal", window.terminalScene);
+            window.sceneManager.switchTo("intro");
+        }
     });
 </script>
 </body>

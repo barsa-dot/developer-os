@@ -1,78 +1,75 @@
-/* ==========================
-   BARSA OS Design System
-========================== */
+/* =========================================
+   BARSA OS — Main Arcade Stylesheet
+   ========================================= */
+
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-html, body {
-    width: 100%;
-    height: 100%;
 }
 
 body {
-    background: #050505;
-    color: #F5F5F5;
-    font-family: "Courier New", monospace;
-    overflow: hidden;
-}
-
-#boot-screen {
-    width: 100vw;
-    height: 100vh;
+    background-color: #050505;
+    color: #00FF00;
+    font-family: 'Courier New', monospace;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* Cabinet & Monitor Frame */
+#boot-screen {
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
 }
 
 #arcade-frame {
-    width: 800px;
-    height: 600px;
-    border: 6px solid #1F6FEB;
-    box-shadow: 0 0 25px #1F6FEB, inset 0 0 15px #1F6FEB;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    position: relative;
+    background: #000000;
+    border: 4px solid #2121ff;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(33, 33, 255, 0.6), inset 0 0 15px rgba(33, 33, 255, 0.4);
     padding: 16px;
-    background: #000;
+    overflow: hidden;
 }
 
 /* HUD Header */
 #arcade-hud {
-    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px;
+    font-family: 'Press Start 2P', monospace;
+    color: #FFFF00;
+    margin-bottom: 12px;
 }
 
-#game-title {
-    color: #FFD700;
-    font-size: 28px;
-    letter-spacing: 4px;
+#arcade-hud h1 {
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px #FFFF00;
 }
 
 .hud-item {
-    color: #FD0000;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 12px;
+    color: #FF0000;
 }
 
 .hud-item span {
-    color: #FFF;
-    margin-left: 8px;
+    color: #FFFFFF;
+    margin-left: 6px;
 }
 
-/* Arena Layering */
+/* Arena & Maze Area */
 #arcade-arena {
     position: relative;
-    width: 720px;
+    width: 100%;
     height: 380px;
-    border: 2px solid #1F6FEB;
-    background: #000;
+    border: 2px solid #2121ff;
+    border-radius: 6px;
+    background: #000000;
     overflow: hidden;
 }
 
@@ -84,126 +81,74 @@ body {
     height: 100%;
 }
 
-#maze-layer { z-index: 1; }
-#pellet-layer { z-index: 2; }
-#character-layer { z-index: 3; }
+/* Character Sprites — Fixed Sizes */
+#character-layer img, .ghost-sprite {
+    position: absolute;
+    width: 24px !important;
+    height: 24px !important;
+    object-fit: contain;
+    transition: left 0.1s linear, top 0.1s linear;
+}
 
-/* Status Bar & Terminal */
-#status-bar {
+#pacman {
+    z-index: 10;
+}
+
+/* Dashboard Grid Widgets Overlay */
+.dashboard-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 12px;
+    padding: 12px;
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.85);
 }
 
-#press-start {
-    color: #FFD700;
-    font-size: 14px;
-    animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-    50% { opacity: 0.3; }
-}
-
-#terminal-line {
-    width: 100%;
-    height: 60px;
+.widget-box {
+    border: 1px solid #2121ff;
+    border-radius: 6px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 8px rgba(33, 33, 255, 0.2);
     overflow: hidden;
+}
+
+/* Terminal & CLI Input */
+#status-bar {
+    margin-top: 12px;
+    border-top: 1px solid #222;
+    padding-top: 8px;
 }
 
 #boot-text {
-    color: #FFD700;
-    font-size: 13px;
-    line-height: 1.4;
-    white-space: pre-wrap;
-    margin: 0;
+    font-size: 12px;
+    color: #FFFF00;
+    line-height: 1.5;
+    max-height: 80px;
+    overflow-y: auto;
 }
 
-/* =========================================
-   POWER PELLET ANIMATION (Commit 23)
-========================================= */
-.power-pellet {
-    animation: pelletPulse 0.8s infinite alternate;
-    transform-box: fill-box;
-    transform-origin: center;
+#cli-box {
+    display: flex;
+    align-items: center;
+    background: #000;
+    border-top: 2px solid #2121ff;
+    padding: 6px 12px;
+    margin-top: 8px;
 }
 
-@keyframes pelletPulse {
-    from {
-        opacity: 0.3;
-        r: 5;
-    }
-    to {
-        opacity: 1;
-        r: 8;
-    }
-}
-
-/* Dashboard Grid Layout */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: auto auto;
-    gap: 12px;
-    padding: 16px;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    z-index: 20;
-}
-
-.dash-widget {
-    background: rgba(0, 0, 0, 0.75);
-    border: 2px solid #2121ff;
-    border-radius: 4px;
-    padding: 12px;
-    color: #ffffff;
-    font-family: 'Courier New', monospace;
-    box-shadow: 0 0 8px rgba(33, 33, 255, 0.4);
-    overflow: hidden;
-}
-
-/* Responsive Layout Adaptations */
-@media (max-width: 768px) {
-    #arcade-frame {
-        width: 100vw;
-        height: 100vh;
-        border-width: 2px;
-    }
-
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-    }
-
-    #cli-box {
-        font-size: 12px;
-    }
-}
-
-/* CRT Overlay Effects */
-.crt-screen-overlay {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none;
-    background: linear-gradient(
-        rgba(18, 16, 16, 0) 50%, 
-        rgba(0, 0, 0, 0.25) 50%
-    ), linear-gradient(
-        90deg,
-        rgba(255, 0, 0, 0.03),
-        rgba(0, 255, 0, 0.01),
-        rgba(0, 0, 255, 0.03)
-    );
-    background-size: 100% 3px, 6px 100%;
-    z-index: 99;
-    animation: crtFlicker 0.15s infinite;
-}
-
-@keyframes crtFlicker {
-    0% { opacity: 0.97; }
-    50% { opacity: 1; }
-    100% { opacity: 0.98; }
+#cli-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #00FF00;
+    font-family: inherit;
+    font-size: 14px;
 }
