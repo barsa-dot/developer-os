@@ -1,70 +1,80 @@
 // =========================================
-// BARSA OS — Path-Following Pac-Man Engine
+// BARSA OS — Pac-Man Engine
 // =========================================
 
-class PacmanEngine {
-    constructor(elementId) {
-        this.elementId = elementId;
-        this.pacmanEl = null;
-        this.stepIndex = 0;
-        this.isMoving = false;
+if (typeof window.PacmanEngine === "undefined") {
 
-        // Waypoints matching the grid coordinates of the maze corridors
-        this.waypoints = [
-            { x: 20,  y: 20,  rotation: 0 },    // Top-Left corner
-            { x: 345, y: 20,  rotation: 0 },    // Top-Center
-            { x: 670, y: 20,  rotation: 90 },   // Top-Right corner
-            { x: 670, y: 330, rotation: 180 },  // Bottom-Right corner
-            { x: 345, y: 330, rotation: 180 },  // Bottom-Center
-            { x: 20,  y: 330, rotation: 270 }   // Bottom-Left corner
-        ];
-    }
-
-    init() {
-        this.pacmanEl = document.getElementById(this.elementId);
-        if (!this.pacmanEl) {
-            console.error(`[PacmanEngine] Element "#${this.elementId}" not found.`);
-            return;
+    class PacmanEngine {
+        constructor() {
+            this.x = 20;
+            this.y = 120;
+            this.speed = 4;
+            this.isInvincible = false;
+            this.patrolInterval = null;
         }
 
-        // Setup base position & transition mechanics
-        this.pacmanEl.style.position = "absolute";
-        this.pacmanEl.style.width = "28px";
-        this.pacmanEl.style.height = "28px";
-        this.pacmanEl.style.transition = "left 1.2s linear, top 1.2s linear, transform 0.2s ease";
-        this.pacmanEl.style.zIndex = "10";
+        init() {
+            console.log("[PacmanEngine] Initializing Pac-Man controller...");
+            this.bindControls();
+        }
 
-        // Spawn at starting waypoint
-        const start = this.waypoints[0];
-        this.pacmanEl.style.left = `${start.x}px`;
-        this.pacmanEl.style.top = `${start.y}px`;
-        this.pacmanEl.style.transform = `rotate(${start.rotation}deg)`;
+        bindControls() {
+            window.addEventListener("keydown", (e) => {
+                // Ignore key movements if typing in the CLI terminal
+                const activeElement = document.activeElement;
+                if (activeElement && activeElement.id === "cli-input") return;
+
+                if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+                    e.preventDefault();
+                    this.move(e.key);
+                }
+            });
+        }
+
+        move(direction) {
+            const pacman = document.getElementById("pacman");
+            if (!pacman) return;
+
+            if (direction === "ArrowUp") this.y = Math.max(10, this.y - this.speed);
+            if (direction === "ArrowDown") this.y = Math.min(300, this.y + this.speed);
+            if (direction === "ArrowLeft") this.x = Math.max(10, this.x - this.speed);
+            if (direction === "ArrowRight") this.x = Math.min(500, this.x + this.speed);
+
+            pacman.style.left = `${this.x}px`;
+            pacman.style.top = `${this.y}px`;
+
+            // Spawn particle sparks on movement if particle engine exists
+            if (window.particleEngine) {
+                window.particleEngine.spawnSparks(this.x + 10, this.y + 10, 3, "#FFFF00");
+            }
+        }
+
+        startPatrol() {
+            console.log("[PacmanEngine] Patrol started.");
+            if (this.patrolInterval) clearInterval(this.patrolInterval);
+
+            // Simple auto-patrol for boot sequence
+            let direction = 1;
+            this.patrolInterval = setInterval(() => {
+                const pacman = document.getElementById("pacman");
+                if (!pacman) return;
+
+                this.x += direction * 2;
+                if (this.x > 250 || this.x < 20) direction *= -1;
+
+                pacman.style.left = `${this.x}px`;
+            }, 50);
+        }
+
+        stopPatrol() {
+            if (this.patrolInterval) {
+                clearInterval(this.patrolInterval);
+                this.patrolInterval = null;
+            }
+        }
     }
 
-    startPatrol() {
-        if (this.isMoving || !this.pacmanEl) return;
-        this.isMoving = true;
-        this.stepIndex = 1;
-        this.moveToNextWaypoint();
-    }
-
-    moveToNextWaypoint() {
-        if (!this.isMoving) return;
-
-        const target = this.waypoints[this.stepIndex];
-        
-        // Face the movement direction and shift position
-        this.pacmanEl.style.transform = `rotate(${target.rotation}deg)`;
-        this.pacmanEl.style.left = `${target.x}px`;
-        this.pacmanEl.style.top = `${target.y}px`;
-
-        // Advance to next waypoint loop after transition completes
-        setTimeout(() => {
-            this.stepIndex = (this.stepIndex + 1) % this.waypoints.length;
-            this.moveToNextWaypoint();
-        }, 1200);
-    }
+    // Attach to window globally
+    window.PacmanEngine = PacmanEngine;
+    window.pacmanEngine = new PacmanEngine();
 }
-
-// Global Export
-window.pacmanEngine = new PacmanEngine("pacman");

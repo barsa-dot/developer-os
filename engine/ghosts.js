@@ -1,80 +1,79 @@
 // =========================================
-// BARSA OS — Ghost Movement Engine
+// BARSA OS — Ghosts Controller Engine
 // =========================================
 
-class GhostEngine {
-    constructor(containerId) {
-        this.containerId = containerId;
-        this.ghosts = [
-            { name: "blinky", color: "#FF0000", x: 320, y: 175, dx: 1, dy: 0 },
-            { name: "pinky",  color: "#FFB8FF", x: 340, y: 175, dx: -1, dy: 0 },
-            { name: "inky",   color: "#00FFFF", x: 360, y: 175, dx: 0, dy: 1 },
-            { name: "clyde",  color: "#FFB852", x: 380, y: 175, dx: 0, dy: -1 }
-        ];
-        this.activeElements = [];
-        this.animFrameId = null;
-    }
+if (typeof window.GhostEngine === "undefined") {
 
-    spawn() {
-        const container = document.getElementById(this.containerId);
-        if (!container) {
-            console.error(`[GhostEngine] Container "#${this.containerId}" not found.`);
-            return;
+    class GhostEngine {
+        constructor() {
+            this.ghosts = [
+                { id: "blinky", color: "red", x: 200, y: 180, dx: 2, dy: 0 },
+                { id: "pinky", color: "pink", x: 230, y: 180, dx: -2, dy: 0 },
+                { id: "inky", color: "cyan", x: 260, y: 180, dx: 0, dy: 2 },
+                { id: "clyde", color: "orange", x: 290, y: 180, dx: 0, dy: -2 }
+            ];
+            this.interval = null;
         }
 
-        this.ghosts.forEach(g => {
-            const el = document.createElement("div");
-            el.id = `ghost-${g.name}`;
-            el.className = "ghost-character";
-            el.style.cssText = `
-                position: absolute;
-                left: ${g.x}px;
-                top: ${g.y}px;
-                width: 26px;
-                height: 26px;
-                transition: left 0.8s linear, top 0.8s linear;
-                z-index: 5;
-            `;
+        spawn() {
+            console.log("[GhostEngine] Spawning ghosts into arena...");
+            const layer = document.getElementById("character-layer");
+            if (!layer) return;
 
-            // SVG markup for classic ghost dome + eyes
-            el.innerHTML = `
-                <svg width="26" height="26" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 3 24 V 10 A 10 10 0 0 1 23 10 V 24 L 20 21 L 17 24 L 13 21 L 10 24 L 7 21 Z" fill="${g.color}" />
-                    <!-- Eyes -->
-                    <circle cx="8" cy="10" r="3" fill="#FFFFFF"/>
-                    <circle cx="9" cy="10" r="1.5" fill="#0000FF"/>
-                    <circle cx="17" cy="10" r="3" fill="#FFFFFF"/>
-                    <circle cx="18" cy="10" r="1.5" fill="#0000FF"/>
-                </svg>
-            `;
+            // Remove existing ghost elements if any
+            document.querySelectorAll(".ghost-sprite").forEach(e => e.remove());
 
-            container.appendChild(el);
-            this.activeElements.push({ data: g, element: el });
-        });
+            this.ghosts.forEach(ghost => {
+                const img = document.createElement("img");
+                img.id = ghost.id;
+                img.className = "ghost-sprite";
+                img.src = `./assets/arcade/svg/ghost-${ghost.color}.svg`;
+                img.style.left = `${ghost.x}px`;
+                img.style.top = `${ghost.y}px`;
+                img.style.width = "24px";
+                img.style.height = "24px";
+                img.style.position = "absolute";
+                img.alt = ghost.id;
 
-        console.log("[GhostEngine] 4 Ghosts spawned.");
-    }
+                // Fallback inline SVG if external file missing
+                img.onerror = () => {
+                    img.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path fill='%23FF0000' d='M12 2C6.48 2 2 6.48 2 12v10l4-4 4 4 4-4 4 4 4-4V12c0-5.52-4.48-10-10-10z'/></svg>";
+                };
 
-    startPatrol() {
-        this.patrolInterval = setInterval(() => {
-            this.activeElements.forEach(item => {
-                const g = item.data;
-                const el = item.element;
-
-                // Move within central zone bounds
-                g.x += g.dx * 30;
-                g.y += g.dy * 20;
-
-                // Simple bounce off arena interior walls
-                if (g.x > 650 || g.x < 50) g.dx *= -1;
-                if (g.y > 310 || g.y < 50) g.dy *= -1;
-
-                el.style.left = `${g.x}px`;
-                el.style.top = `${g.y}px`;
+                layer.appendChild(img);
             });
-        }, 800);
-    }
-}
+        }
 
-// Global Export
-window.ghostEngine = new GhostEngine("character-layer");
+        startPatrol() {
+            console.log("[GhostEngine] Ghosts moving on patrol routes...");
+            if (this.interval) clearInterval(this.interval);
+
+            this.interval = setInterval(() => {
+                this.ghosts.forEach(ghost => {
+                    const elem = document.getElementById(ghost.id);
+                    if (!elem) return;
+
+                    ghost.x += ghost.dx;
+                    ghost.y += ghost.dy;
+
+                    // Bounce within arena boundaries
+                    if (ghost.x > 800 || ghost.x < 20) ghost.dx *= -1;
+                    if (ghost.y > 340 || ghost.y < 20) ghost.dy *= -1;
+
+                    elem.style.left = `${ghost.x}px`;
+                    elem.style.top = `${ghost.y}px`;
+                });
+            }, 60);
+        }
+
+        stopPatrol() {
+            if (this.interval) {
+                clearInterval(this.interval);
+                this.interval = null;
+            }
+        }
+    }
+
+    window.GhostEngine = GhostEngine;
+    window.ghostEngine = new GhostEngine();
+}
