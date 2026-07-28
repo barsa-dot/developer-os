@@ -4,7 +4,7 @@
 
 class AutocompleteEngine {
     constructor() {
-        this.validCommands = ["help", "about", "projects", "github", "resume", "theme", "audio", "clear"];
+        this.validCommands = ["help", "about", "projects", "github", "theme", "audio", "clear"];
     }
 
     attach(inputElem) {
